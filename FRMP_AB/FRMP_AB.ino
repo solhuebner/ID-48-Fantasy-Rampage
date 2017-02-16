@@ -1,7 +1,7 @@
 /*
-  Fantasy Rampage: http://www.team-arg.org/FRMP-manual.html
+  Fantasy Rampage: http://www.team-arg.org/frmp-manual.html
 
-  Arduboy version 0.1:  http://www.team-arg.org/FRMP-downloads.html
+  Arduboy version 0.1:  http://www.team-arg.org/frmp-downloads.html
 
   MADE by TEAM a.r.g. : http://www.team-arg.org/more-about.html
 
@@ -14,14 +14,11 @@
 //determine the game
 #define GAME_ID 48
 
+#include "Arglib.h"
 #include "globals.h"
 #include "menu.h"
+#include "font.h"
 #include "game.h"
-#include "inputs.h"
-#include "player.h"
-#include "elements.h"
-#include "enemies.h"
-#include "levels.h"
 
 typedef void (*FunctionPointer) ();
 
@@ -32,7 +29,7 @@ const FunctionPointer PROGMEM mainGameLoop[] = {
   stateMenuPlay,
   stateMenuInfo,
   stateMenuSoundfx,
-  stateGameNextLevel,
+  stateGameSelectGameMode,
   stateGamePlaying,
   stateGamePause,
   stateGameOver,
@@ -40,17 +37,16 @@ const FunctionPointer PROGMEM mainGameLoop[] = {
 
 
 void setup() {
-  //ATM.play(titleSong);
-  arduboy.begin();
-  arduboy.setFrameRate(60);                                 // set the frame rate of the game at 60 fps
+  arduboy.start();
+  arduboy.setFrameRate(30);                                 // set the frame rate of the game at 30 fps
   arduboy.initRandomSeed();                                 // This sets the random to more random, remove this if no random is needed !
 }
 
 
 void loop() {
   if (!(arduboy.nextFrame())) return;
-  arduboy.pollButtons();
-  arduboy.clear();
+  arduboy.poll();
+  arduboy.clearDisplay();
   ((FunctionPointer) pgm_read_word (&mainGameLoop[gameState]))();
   arduboy.display();
 }
