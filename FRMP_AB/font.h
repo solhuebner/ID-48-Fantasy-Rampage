@@ -1,7 +1,6 @@
 #ifndef FONT_H
 #define FONT_H
 
-#include <Arduino.h>
 #include "globals.h"
 
 void print_progmem(uint8_t x, uint8_t y, const char str[]) {
