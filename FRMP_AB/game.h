@@ -17,10 +17,17 @@
 #define GAME_MODE_BASIC 0
 #define GAME_MODE_ADVANCED 1
 
-#define GAME_SHOW_DRAW_CARD    0
-#define GAME_SHOW_HAND         1
-#define GAME_START_PLAYER_HAND 2
-#define GAME_SHOW_CARD_PLAYED  3
+#define IMG_BONUS      21
+#define IMG_BLANK      0
+
+#define GAME_START_ROUND               0
+#define GAME_SHOW_START_ROUND          1
+#define GAME_SHOW_DRAW_CARD            2
+#define GAME_SHOW_HAND                 3
+#define GAME_START_PLAYER_HAND         4
+#define GAME_COMPUTER_PLAY_HAND        5
+#define GAME_DETERMINE_ROUND_WINNER    6
+#define GAME_SHOW_CARDS_IN_PLAY        7
 
 
  char deck[DECK_SIZE];
@@ -126,9 +133,9 @@ void sort_hand(char *hand) {
 }
 
 char get_hand_size(char *hand) {
-  char hand_size = 0;
-  for(char i=0; i<HAND_SIZE; i++) {
-    if (hand[i] > -1) hand_size++;
+  char hand_size = HAND_SIZE;
+  for(char i=0; i<(HAND_SIZE-1); i++) {
+    if (hand[i] == -1) hand_size--;
   }
   return hand_size;
 }
@@ -137,6 +144,13 @@ void display_card (char x, char y, char card) {
   char curr_x = x;
   char curr_y = y;
   CardInfo inf = get_card_info(card);
+
+  if (game_mode == GAME_MODE_ADVANCED) {
+    if (inf.suit == current_suit) {
+      sprites.drawOverwrite(curr_x+32, curr_y, card_8x8, IMG_BONUS);    
+    }
+  }
+  curr_y+=8;
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, inf.suit + 1);
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
@@ -163,12 +177,91 @@ void start_play_round() {
     //empty out in play cards
    card_in_play = false;
    memset(in_play,-1,sizeof(in_play));
+   drawn_card = -1;
 
    //players draw cards
    if (!deck_drawn) drawn_card = draw_from_deck(player_p_hand);
    if (!deck_drawn) draw_from_deck(player_c_hand);
 
-   disp_state = GAME_SHOW_DRAW_CARD;
+   disp_state = GAME_SHOW_START_ROUND;
+}
+
+void computer_play_hand(){
+  sort_hand(player_c_hand);
+  player_c_hand_size = get_hand_size(player_c_hand);
+
+  //if no cards are in play
+  if (!card_in_play) {
+    //play highest rank card in the hand
+    in_play[PLAYER_C] = player_c_hand[0];
+    player_p_hand[0] = -1;   
+  } else {
+    //otherwise 
+    //compare card in play to cards in hand
+    char card_in_play = in_play[PLAYER_P];
+    CardInfo currCard  = get_card_info(card_in_play);
+    
+    //in advanced game mode, if the current suit == the card's 
+    //suit it gets a +1 power boost
+    if (game_mode == GAME_MODE_ADVANCED) {
+       if (currCard.suit == current_suit) currCard.power++;
+    }
+    
+    //start with lowest rank card by default
+    char card_to_play = player_c_hand_size -1;
+    //play lowest rank card that has greater power than what is in play
+    for (char i=player_c_hand_size-1; i >=0; i--) {
+      //cannot play an empty slot
+      if (player_c_hand[i] > -1) {
+        CardInfo thisCard = get_card_info(player_c_hand[i]);
+
+        if (game_mode == GAME_MODE_ADVANCED) {
+          if (thisCard.suit == current_suit) thisCard.power++;
+        }
+        
+        if (thisCard.power > currCard.power) {
+          card_to_play = i;
+          break;
+        }
+      } else {
+        card_to_play--;
+      }
+    }
+    
+    in_play[PLAYER_C] = player_c_hand[card_to_play];
+    player_c_hand[card_to_play] = -1;
+  }
+  disp_state = GAME_DETERMINE_ROUND_WINNER;
+}
+
+void determine_round_winner() {
+   CardInfo pCard  = get_card_info(in_play[PLAYER_P]);
+   CardInfo cCard  = get_card_info(in_play[PLAYER_C]);
+   
+   //in advanced game mode, if the current suit == the card's 
+   //suit it gets a +1 power boost
+   if (game_mode == GAME_MODE_ADVANCED) {
+    if (pCard.suit == current_suit) pCard.power++;
+    if (cCard.suit == current_suit) cCard.power++;
+   }
+
+   if(pCard.power == cCard.power) {
+    if (last_winner == PLAYER_P) {
+    //player still wins
+    PLAYER_P_score++;
+    } else {
+    PLAYER_C_score++;      
+    }
+   } else {
+     if(pCard.power > cCard.power) {
+      last_winner = PLAYER_P;
+      PLAYER_P_score++;
+     } else {
+      last_winner = PLAYER_C;
+      PLAYER_C_score++;
+     }
+   }
+  disp_state = GAME_SHOW_CARDS_IN_PLAY;
 }
 
 void startGame() {
@@ -212,6 +305,27 @@ void stateGameSelectGameMode() {
   print_progmem(26,24 + (game_mode * 12),text_pointer);
 }
 
+void stateShowStartRound() {
+      print_progmem(0, 0, text_player);
+      print_number(32,0, PLAYER_P_score);
+      print_progmem(64, 0, text_computer);
+      print_number(104,0, PLAYER_C_score);
+    
+      print_progmem(36, 16, text_start_round);
+
+     print_progmem(36, 32, text_element);
+
+     sprites.drawOverwrite(48, 48, card_8x8, current_suit + 17);
+  
+    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+         if (!deck_drawn) {
+             disp_state = GAME_SHOW_DRAW_CARD;
+         } else {
+             disp_state = GAME_START_PLAYER_HAND;
+         }
+    }
+}
+
 void stateShowDrawCard() {
     print_progmem(36, 0, text_your_draw);
     display_card (36,8,drawn_card);
@@ -227,6 +341,7 @@ void stateStartPlayerHand () {
 
 void stateShowHand () {
   print_progmem(20, 0, text_pick_card_to_play);
+  print_number (100, 0, player_p_hand_size);
   
   //draw forward to hand_ptr
   for (char i=0; i < hand_ptr; i++) {
@@ -241,18 +356,44 @@ void stateShowHand () {
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     in_play[PLAYER_P] = player_p_hand[hand_ptr];
     player_p_hand[hand_ptr] = -1;
-    disp_state = GAME_SHOW_CARD_PLAYED;
+    disp_state = GAME_COMPUTER_PLAY_HAND;
+    card_in_play = true;
   }
 }
 
-void stateShowCardPlayed() {
-    display_card (36,8,in_play[PLAYER_P]);
-    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) disp_state = GAME_START_PLAYER_HAND;
+void stateShowCardsInPlay() {
+    print_progmem(0, 0, text_player);
+    print_number(32,0, PLAYER_P_score);
+    print_progmem(64, 0, text_computer);
+    print_number(104,0, PLAYER_C_score);
+    if (in_play[PLAYER_P] > -1) {
+      if (last_winner == PLAYER_P) print_progmem(8, 8, text_win);
+      display_card (0,8,in_play[PLAYER_P]);
+    }
+    if (in_play[PLAYER_C] > -1) {
+      if (last_winner == PLAYER_C) print_progmem(72, 8, text_win);
+      display_card (64,8,in_play[PLAYER_C]);
+    }
+    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) 
+    {
+      if (game_mode == GAME_MODE_ADVANCED) current_suit++;
+      if (current_suit > 3) current_suit = 0;
+      disp_state = GAME_START_ROUND;
+    }
 }
+
 void stateGamePlaying()
 {
   gameState = STATE_GAME_PLAYING;
   switch (disp_state) {
+    case GAME_START_ROUND:
+       start_play_round();
+       break;
+    
+    case GAME_SHOW_START_ROUND:
+       stateShowStartRound();
+       break;
+    
     case GAME_SHOW_DRAW_CARD:
        stateShowDrawCard();
        break;
@@ -265,8 +406,16 @@ void stateGamePlaying()
        stateShowHand();
        break;      
 
-    case GAME_SHOW_CARD_PLAYED:
-       stateShowCardPlayed();
+    case GAME_COMPUTER_PLAY_HAND:
+       computer_play_hand();
+       break; 
+
+    case GAME_DETERMINE_ROUND_WINNER:
+       determine_round_winner();
+       break;        
+
+    case GAME_SHOW_CARDS_IN_PLAY:
+       stateShowCardsInPlay();
        break;
   }
 };

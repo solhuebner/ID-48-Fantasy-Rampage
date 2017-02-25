@@ -334,7 +334,12 @@ const char PROGMEM text_sound[] = {"Sound"};
 const char PROGMEM text_select_game_mode[] = {"Select Game Mode"};
 const char PROGMEM text_basic[] = {"Basic"};
 const char PROGMEM text_advanced[] = {"Advanced"};
+const char PROGMEM text_start_round[] = {"Start Round"};
+const char PROGMEM text_element[] = {"Element"};
 const char PROGMEM text_your_draw[] = {"Your Draw"};
 const char PROGMEM text_pick_card_to_play[] = {"Pick Card to Play"};
+const char PROGMEM text_player[] = {"Player"};
+const char PROGMEM text_computer[] = {"Computer"};
+const char PROGMEM text_win[] = {"WIN!"};
 
 #endif
