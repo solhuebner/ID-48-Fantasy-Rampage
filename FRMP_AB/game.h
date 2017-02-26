@@ -29,7 +29,7 @@
 #define GAME_SHOW_COMPUTER_CARD_PLAYED 6
 #define GAME_DETERMINE_ROUND_WINNER    7
 #define GAME_SHOW_CARDS_IN_PLAY        8
-
+#define GAME_SHOW_WINNER               9
 
  char deck[DECK_SIZE];
  char player_p_hand[HAND_SIZE];
@@ -175,6 +175,8 @@ void display_card (char x, char y, char card) {
 }
 
 void start_play_round() {
+  round_count++;
+  if (round_count <= MAX_ROUNDS) {
     //empty out in play cards
    card_in_play = false;
    memset(in_play,-1,sizeof(in_play));
@@ -185,6 +187,9 @@ void start_play_round() {
    if (!deck_drawn) draw_from_deck(player_c_hand);
 
    disp_state = GAME_SHOW_START_ROUND;
+  } else {
+   disp_state = GAME_SHOW_WINNER;
+  }
 }
 
 void computer_play_hand(){
@@ -275,6 +280,7 @@ void startGame() {
      if (game_mode == GAME_MODE_ADVANCED) current_suit = SUIT_EARTH;
 
      drawn_card = -1;
+     round_count = 0;
      
      //empty hand
      memset(player_p_hand,-1,sizeof(player_p_hand));
@@ -418,6 +424,36 @@ void stateShowCardsInPlay() {
     }
 }
 
+void stateShowWinner() {
+    print_progmem(0, 0, text_player);
+    print_number(32,0, PLAYER_P_score);
+    print_progmem(64, 0, text_computer);
+    print_number(104,0, PLAYER_C_score);
+
+    if (PLAYER_P_score > PLAYER_C_score) {
+      //player wins
+      print_progmem(44, 16, text_win);
+      sprites.drawSelfMasked(44, 24, player_win_24x24, 0);
+      print_progmem(44, 56, text_player);
+      
+    } else {
+      if (PLAYER_C_score > PLAYER_P_score) {
+        //computer wins
+        print_progmem(44, 16, text_win);
+        sprites.drawSelfMasked(44, 24, computer_win_24x24, 0);
+        print_progmem(44, 56, text_computer);
+      } else {
+        //tie
+        print_progmem(44, 16, text_tie);
+      }
+    }
+    
+    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) 
+    {
+      gameState = STATE_MENU_MAIN;
+    }
+}
+
 void stateGamePlaying()
 {
   gameState = STATE_GAME_PLAYING;
@@ -457,6 +493,10 @@ void stateGamePlaying()
     case GAME_SHOW_CARDS_IN_PLAY:
        stateShowCardsInPlay();
        break;
+
+    case GAME_SHOW_WINNER:
+       stateShowWinner();
+       break;       
   }
 };
 
