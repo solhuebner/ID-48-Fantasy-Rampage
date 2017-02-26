@@ -340,6 +340,7 @@ const char PROGMEM text_your_draw[] = {"Your Draw"};
 const char PROGMEM text_pick_card_to_play[] = {"Pick Card to Play"};
 const char PROGMEM text_player[] = {"Player"};
 const char PROGMEM text_computer[] = {"Computer"};
+const char PROGMEM text_computer_played[] = {"Computer Played"};
 const char PROGMEM text_win[] = {"WIN!"};
 
 #endif

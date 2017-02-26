@@ -26,8 +26,9 @@
 #define GAME_SHOW_HAND                 3
 #define GAME_START_PLAYER_HAND         4
 #define GAME_COMPUTER_PLAY_HAND        5
-#define GAME_DETERMINE_ROUND_WINNER    6
-#define GAME_SHOW_CARDS_IN_PLAY        7
+#define GAME_SHOW_COMPUTER_CARD_PLAYED 6
+#define GAME_DETERMINE_ROUND_WINNER    7
+#define GAME_SHOW_CARDS_IN_PLAY        8
 
 
  char deck[DECK_SIZE];
@@ -134,7 +135,7 @@ void sort_hand(char *hand) {
 
 char get_hand_size(char *hand) {
   char hand_size = HAND_SIZE;
-  for(char i=0; i<(HAND_SIZE-1); i++) {
+  for(char i=0; i<(HAND_SIZE); i++) {
     if (hand[i] == -1) hand_size--;
   }
   return hand_size;
@@ -194,7 +195,7 @@ void computer_play_hand(){
   if (!card_in_play) {
     //play highest rank card in the hand
     in_play[PLAYER_C] = player_c_hand[0];
-    player_p_hand[0] = -1;   
+    player_c_hand[0] = -1;   
   } else {
     //otherwise 
     //compare card in play to cards in hand
@@ -231,7 +232,11 @@ void computer_play_hand(){
     in_play[PLAYER_C] = player_c_hand[card_to_play];
     player_c_hand[card_to_play] = -1;
   }
-  disp_state = GAME_DETERMINE_ROUND_WINNER;
+  if (last_winner == PLAYER_C) {
+     disp_state = GAME_SHOW_COMPUTER_CARD_PLAYED;
+  } else {
+     disp_state = GAME_DETERMINE_ROUND_WINNER;
+  }
 }
 
 void determine_round_winner() {
@@ -312,16 +317,24 @@ void stateShowStartRound() {
       print_number(104,0, PLAYER_C_score);
     
       print_progmem(36, 16, text_start_round);
-
-     print_progmem(36, 32, text_element);
-
-     sprites.drawOverwrite(48, 48, card_8x8, current_suit + 17);
-  
+      
+     if (game_mode == GAME_MODE_ADVANCED) {
+       print_progmem(36, 32, text_element);
+       sprites.drawOverwrite(48, 48, card_8x8, current_suit + 17);
+     }
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+      
          if (!deck_drawn) {
              disp_state = GAME_SHOW_DRAW_CARD;
          } else {
-             disp_state = GAME_START_PLAYER_HAND;
+            //use last_winner to detremine who can play first:
+            //if last_winner was computer (PLAYER_C) then 
+            //call computer_play_hand
+            if (last_winner == PLAYER_C) {
+              computer_play_hand();
+            } else {
+               disp_state = GAME_START_PLAYER_HAND;
+            }
          }
     }
 }
@@ -329,7 +342,16 @@ void stateShowStartRound() {
 void stateShowDrawCard() {
     print_progmem(36, 0, text_your_draw);
     display_card (36,8,drawn_card);
-    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) disp_state = GAME_START_PLAYER_HAND;
+    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+      //use last_winner to detremine who can play first:
+      //if last_winner was computer (PLAYER_C) then 
+      //call computer_play_hand
+      if (last_winner == PLAYER_C) {
+          computer_play_hand();
+      } else {
+          disp_state = GAME_START_PLAYER_HAND;
+      }      
+    }
 }
 
 void stateStartPlayerHand () {
@@ -356,9 +378,23 @@ void stateShowHand () {
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     in_play[PLAYER_P] = player_p_hand[hand_ptr];
     player_p_hand[hand_ptr] = -1;
-    disp_state = GAME_COMPUTER_PLAY_HAND;
-    card_in_play = true;
+
+    if (last_winner == PLAYER_C) {
+        disp_state = GAME_DETERMINE_ROUND_WINNER;
+    } else {
+        card_in_play = true;
+        disp_state = GAME_COMPUTER_PLAY_HAND;
+    }
+
   }
+}
+
+void stateShowComputerCardPlayed() {
+    print_progmem(36, 0, text_computer_played);
+    display_card (36,8,in_play[PLAYER_C]);
+    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+      disp_state = GAME_START_PLAYER_HAND;
+    }
 }
 
 void stateShowCardsInPlay() {
@@ -409,6 +445,10 @@ void stateGamePlaying()
     case GAME_COMPUTER_PLAY_HAND:
        computer_play_hand();
        break; 
+
+    case GAME_SHOW_COMPUTER_CARD_PLAYED:
+       stateShowComputerCardPlayed();
+       break;
 
     case GAME_DETERMINE_ROUND_WINNER:
        determine_round_winner();
