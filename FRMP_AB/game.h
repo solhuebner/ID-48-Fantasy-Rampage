@@ -282,6 +282,15 @@ void startGame() {
      drawn_card = -1;
      round_count = 0;
      
+     hand_ptr = 0;
+
+     last_winner = PLAYER_P;
+     PLAYER_P_score = 0;
+     PLAYER_C_score = 0;
+
+     card_in_play = false;
+     deck_drawn = false;
+     
      //empty hand
      memset(player_p_hand,-1,sizeof(player_p_hand));
      memset(player_c_hand,-1,sizeof(player_c_hand));
