@@ -39,6 +39,7 @@
  char player_p_hand_size = HAND_SIZE;
  char player_c_hand_size = HAND_SIZE;
 
+ char deck_set_up = false;
  char deck_ptr = 0;
  bool card_in_play = false;
  bool deck_drawn = false;
@@ -76,9 +77,10 @@ CardInfo get_card_info ( char card) {
 }
 
 void setup_deck () {
-  for ( char i=0; i< DECK_SIZE; i++) {
-    deck[i] = i;
-  }
+     memset(deck,0,sizeof(deck));
+     for ( char i=0; i< DECK_SIZE; i++) {
+       deck[i] = i;
+     }
 }
 
 void shuffle_deck() {
@@ -290,10 +292,15 @@ void startGame() {
 
      card_in_play = false;
      deck_drawn = false;
-     
+ 
+     player_p_hand_size = HAND_SIZE;
+     player_c_hand_size = HAND_SIZE;
+ 
      //empty hand
      memset(player_p_hand,-1,sizeof(player_p_hand));
      memset(player_c_hand,-1,sizeof(player_c_hand));
+     
+     memset(in_play,-1,sizeof(in_play));
 
      //draw initial cards
      for (char i=0; i < 4; i++) {
