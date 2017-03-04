@@ -150,28 +150,30 @@ void display_card (char x, char y, char card) {
 
   if (game_mode == GAME_MODE_ADVANCED) {
     if (inf.suit == current_suit) {
-      sprites.drawOverwrite(curr_x+32, curr_y, card_8x8, IMG_BONUS);    
+      sprites.drawOverwrite(curr_x+56, curr_y, card_8x8, IMG_BONUS);    
     }
   }
   curr_y+=8;
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, inf.suit + 1);
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, inf.power + 1);
   curr_y+=8;
   curr_x = x;
-  for (char i=0; i< 4; i++) {
+  for (char i=0; i< 5; i++) {
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 12);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);        
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 13);
     curr_y+=8;
     curr_x = x;
   }
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 14);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 15);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 15);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 16);
   
   sprites.drawOverwrite(x+16, y+16, monsters, inf.img);
 }
@@ -363,8 +365,8 @@ void stateShowStartRound() {
 }
 
 void stateShowDrawCard() {
-    print_progmem(36, 0, text_your_draw);
-    display_card (36,8,drawn_card);
+    print_progmem(20, 0, text_your_draw);
+    display_card (20,8,drawn_card);
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
       //use last_winner to detremine who can play first:
       //if last_winner was computer (PLAYER_C) then 
@@ -413,8 +415,8 @@ void stateShowHand () {
 }
 
 void stateShowComputerCardPlayed() {
-    print_progmem(36, 0, text_computer_played);
-    display_card (36,8,in_play[PLAYER_C]);
+    print_progmem(20, 0, text_computer_played);
+    display_card (20,8,in_play[PLAYER_C]);
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
       disp_state = GAME_START_PLAYER_HAND;
     }
