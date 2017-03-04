@@ -277,6 +277,7 @@ void determine_round_winner() {
 }
 
 void startGame() {
+     deck_ptr = 0;
      setup_deck();
      shuffle_deck();
      if (game_mode == GAME_MODE_ADVANCED) current_suit = SUIT_EARTH;
