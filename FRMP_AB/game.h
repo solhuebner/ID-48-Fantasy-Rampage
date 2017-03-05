@@ -35,6 +35,7 @@
  char player_p_hand[HAND_SIZE];
  char player_c_hand[HAND_SIZE];
  char in_play[IN_PLAY_SIZE];
+ char round_winner[MAX_ROUNDS];
 
  char player_p_hand_size = HAND_SIZE;
  char player_c_hand_size = HAND_SIZE;
@@ -57,6 +58,14 @@
  char current_suit = SUIT_EARTH;
  
 //------------------------
+
+MapInfo get_map_info(char info) {
+  int index = (info * 2);
+  MapInfo ret;
+  ret.x = pgm_read_byte_near(map_info_data + index);
+  ret.y = pgm_read_byte_near(map_info_data + (index+1));
+  return ret;
+}
 
 CardInfo get_card_info ( char card) {
   int index = (card * 4);
@@ -262,23 +271,28 @@ void determine_round_winner() {
    if(pCard.power == cCard.power) {
     if (last_winner == PLAYER_P) {
     //player still wins
-    PLAYER_P_score++;
+      PLAYER_P_score++;
+      round_winner[round_count-1] = PLAYER_P;
     } else {
-    PLAYER_C_score++;      
+      PLAYER_C_score++;   
+      round_winner[round_count-1] = PLAYER_C; 
     }
    } else {
      if(pCard.power > cCard.power) {
       last_winner = PLAYER_P;
       PLAYER_P_score++;
+      round_winner[round_count-1] = PLAYER_P;
      } else {
       last_winner = PLAYER_C;
       PLAYER_C_score++;
+      round_winner[round_count-1] = PLAYER_C;
      }
    }
   disp_state = GAME_SHOW_CARDS_IN_PLAY;
 }
 
 void startGame() {
+     memset(round_winner,-1,sizeof(round_winner));
      deck_ptr = 0;
      setup_deck();
      shuffle_deck();
@@ -341,11 +355,20 @@ void stateShowStartRound() {
       print_progmem(64, 0, text_computer);
       print_number(104,0, PLAYER_C_score);
     
-      print_progmem(36, 16, text_start_round);
+      print_progmem(0, 8, text_start_round);
       
      if (game_mode == GAME_MODE_ADVANCED) {
-       print_progmem(36, 32, text_element);
-       sprites.drawOverwrite(48, 48, card_8x8, current_suit + 17);
+       print_progmem(64, 8, text_element);
+       sprites.drawOverwrite(96, 8, card_8x8, current_suit + 17);
+       sprites.drawOverwrite(32, 16, map_64x48, 0);
+
+       for (char i=0; i < MAX_ROUNDS; i++) {
+        if (round_winner[i] > -1) {
+          MapInfo curr = get_map_info(i);
+          sprites.drawSelfMasked(curr.x + 32, curr.y + 16, map_marker_4x4, round_winner[i]);
+        }
+       }
+       
      }
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
       

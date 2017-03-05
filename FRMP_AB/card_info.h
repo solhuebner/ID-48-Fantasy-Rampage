@@ -68,3 +68,40 @@ struct CardInfo {
    char text;
 };
 
+const unsigned char PROGMEM map_info_data[] {
+0,0,
+16,0,
+32,0,
+48,0,
+
+12,12,
+28,12,
+44,12,
+60,12,
+
+0,16,
+16,16,
+32,16,
+48,16,
+
+12,28,
+28,28,
+44,28,
+60,28,
+
+0,32,
+16,32,
+32,32,
+48,32,
+
+12,44,
+28,44,
+44,44,
+60,44,
+};
+
+#define MAP_INFO_SIZE 
+struct MapInfo {
+    char x;
+    char y;
+};

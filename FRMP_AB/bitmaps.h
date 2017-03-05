@@ -433,6 +433,16 @@ const unsigned char PROGMEM map_64x48[] =
 0x61, 0xf6, 0x7a, 0xfc, 0x0e, 0x0f, 0x0f, 0x0d, 
 };
 
+
+const unsigned char PROGMEM map_marker_4x4[] =
+{
+// width, height,
+ 4, 4,
+0x00, 0x06, 0x06, 0x00,
+0x00, 0x04, 0x02, 0x00, 
+};
+
+
 const char PROGMEM text_2017_trodoss[] = {"2017 Trodoss"};
 const char PROGMEM text_pointer[] = {">"};
 const char PROGMEM text_help[] = {"Help"};
