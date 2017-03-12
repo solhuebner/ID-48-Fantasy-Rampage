@@ -17,7 +17,7 @@
 #define GAME_MODE_BASIC 0
 #define GAME_MODE_ADVANCED 1
 
-#define IMG_BONUS      21
+#define IMG_BONUS      11
 #define IMG_BLANK      0
 
 #define GAME_START_ROUND               0
@@ -163,28 +163,31 @@ void display_card (char x, char y, char card) {
     }
   }
   curr_y+=8;
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, inf.suit + 1);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 11);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, inf.power + 1);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_number_16x16, inf.suit);
+  sprites.drawOverwrite(curr_x+=16, curr_y, card_8x8, 1);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 1);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 1);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_number_16x16, inf.power);
   curr_y+=8;
+  curr_x = x+16;
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+  curr_y+=8;  
   curr_x = x;
-  for (char i=0; i< 5; i++) {
-    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 12);
+  for (char i=0; i< 4; i++) {
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 2);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);        
-    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 13);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 3);
     curr_y+=8;
     curr_x = x;
   }
   
-  sprites.drawOverwrite(x+16, y+16, monsters, inf.img);
+  sprites.drawOverwrite(x+20, y+24, monsters, inf.img);
 }
 
 void start_play_round() {
@@ -359,7 +362,7 @@ void stateShowStartRound() {
       
      if (game_mode == GAME_MODE_ADVANCED) {
        print_progmem(64, 8, text_element);
-       sprites.drawOverwrite(96, 8, card_8x8, current_suit + 17);
+       sprites.drawOverwrite(96, 8, card_8x8, current_suit + 7);
        sprites.drawOverwrite(32, 16, map_64x48, 0);
 
        for (char i=0; i < MAX_ROUNDS; i++) {
@@ -415,11 +418,11 @@ void stateShowHand () {
   
   //draw forward to hand_ptr
   for (char i=0; i < hand_ptr; i++) {
-       display_card((i*8) + 16,8,player_p_hand[i]);
+       display_card((i*16),8,player_p_hand[i]);
   }
 
   for (char i=player_p_hand_size-1; i > (hand_ptr-1); i--) {
-       display_card((i*8) + 16,8,player_p_hand[i]);
+       display_card((i*16),8,player_p_hand[i]);
   }
   if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) hand_ptr++;
   if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
