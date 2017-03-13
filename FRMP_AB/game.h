@@ -17,7 +17,7 @@
 #define GAME_MODE_BASIC 0
 #define GAME_MODE_ADVANCED 1
 
-#define IMG_BONUS      11
+#define IMG_BONUS      14
 #define IMG_BLANK      0
 
 #define GAME_START_ROUND               0
@@ -163,11 +163,13 @@ void display_card (char x, char y, char card) {
     }
   }
   curr_y+=8;
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_number_16x16, inf.suit);
+  sprites.drawPlusMask(curr_x+=8, curr_y, cardCorners_plus_mask, 0);
+  sprites.drawOverwrite(curr_x+4, curr_y+4, card_8x8, inf.suit + 10);
   sprites.drawOverwrite(curr_x+=16, curr_y, card_8x8, 1);
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 1);
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 1);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_number_16x16, inf.power);
+  sprites.drawPlusMask(curr_x+=8, curr_y, cardCorners_plus_mask, 1);
+  sprites.drawOverwrite(curr_x+4, curr_y+4, card_8x8, inf.power);
   curr_y+=8;
   curr_x = x+16;
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
@@ -362,7 +364,7 @@ void stateShowStartRound() {
       
      if (game_mode == GAME_MODE_ADVANCED) {
        print_progmem(64, 8, text_element);
-       sprites.drawOverwrite(96, 8, card_8x8, current_suit + 7);
+       sprites.drawOverwrite(96, 8, card_8x8, current_suit + 10);
        sprites.drawOverwrite(32, 16, map_64x48, 0);
 
        for (char i=0; i < MAX_ROUNDS; i++) {
