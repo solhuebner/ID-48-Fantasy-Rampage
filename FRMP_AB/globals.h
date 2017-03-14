@@ -15,10 +15,12 @@
 #define STATE_MENU_SOUNDFX           5
 
 //define game states (on main menu)
-#define STATE_GAME_SELECT_MODE       6
-#define STATE_GAME_PLAYING           7
-#define STATE_GAME_PAUSE             8
-#define STATE_GAME_OVER              9
+#define STATE_GAME_SELECT_GAME_MODE   6
+#define STATE_GAME_SELECT_PLAYER_MODE 7
+#define STATE_GAME_PLAYING            8
+#define STATE_GAME_PAUSE              9
+#define STATE_GAME_OVER               10
+
 
 Arduboy2Base arduboy;
 Sprites sprites;

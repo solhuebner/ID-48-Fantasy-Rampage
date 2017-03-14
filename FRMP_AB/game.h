@@ -11,11 +11,14 @@
 #define IN_PLAY_SIZE 2
 #define MAX_ROUNDS 24
 
-#define PLAYER_P 0
-#define PLAYER_C 1
+#define PLAYER_P 0  //Player 1, or Player (Human)
+#define PLAYER_C 1  //Player 2, or Computer
 
 #define GAME_MODE_BASIC 0
 #define GAME_MODE_ADVANCED 1
+
+#define PLAYER_MODE_1_PLAYER 0 //1 Player (Human/Computer)
+#define PLAYER_MODE_2_PLAYER 1 //2 Player (Human/Human)
 
 #define IMG_BONUS      14
 #define IMG_BLANK      0
@@ -54,6 +57,7 @@
  char hand_ptr = 0;
 
  char game_mode = GAME_MODE_BASIC;
+ char player_mode = PLAYER_MODE_1_PLAYER;
  char disp_state = GAME_SHOW_DRAW_CARD;
  char current_suit = SUIT_EARTH;
  
@@ -336,11 +340,26 @@ void startGame() {
 //------------------------
 void stateMenuPlay()
 {
-  gameState = STATE_GAME_SELECT_MODE;
+  gameState = STATE_GAME_SELECT_GAME_MODE;
 };
 
+void stateGameSelectPlayerMode() {
+  gameState = STATE_GAME_SELECT_PLAYER_MODE;
+  print_progmem(24,12,text_select_player_mode);
+  print_progmem(32,24,text_1_player);
+  print_progmem(32,36,text_2_player); 
+
+  if (arduboy.justPressed(UP_BUTTON)) player_mode = PLAYER_MODE_1_PLAYER;
+  if (arduboy.justPressed(DOWN_BUTTON)) player_mode = PLAYER_MODE_2_PLAYER;
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+    startGame();
+    gameState = STATE_GAME_PLAYING;
+  }
+  print_progmem(26,24 + (player_mode * 12),text_pointer);
+}
+
 void stateGameSelectGameMode() {
-  gameState = STATE_GAME_SELECT_MODE;
+  gameState = STATE_GAME_SELECT_GAME_MODE;
   print_progmem(24,12,text_select_game_mode);
   print_progmem(32,24,text_basic);
   print_progmem(32,36,text_advanced); 
@@ -348,8 +367,8 @@ void stateGameSelectGameMode() {
   if (arduboy.justPressed(UP_BUTTON)) game_mode = GAME_MODE_BASIC;
   if (arduboy.justPressed(DOWN_BUTTON)) game_mode = GAME_MODE_ADVANCED;
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
-    startGame();
-    gameState = STATE_GAME_PLAYING;
+    stateGameSelectPlayerMode();
+    gameState = STATE_GAME_SELECT_PLAYER_MODE;
   }
   print_progmem(26,24 + (game_mode * 12),text_pointer);
 }
@@ -443,7 +462,8 @@ void stateShowHand () {
 }
 
 void stateShowComputerCardPlayed() {
-    print_progmem(20, 0, text_computer_played);
+    print_progmem(20, 0, text_computer);
+    print_progmem(56, 0, text_played);
     display_card (20,8,in_play[PLAYER_C]);
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
       disp_state = GAME_START_PLAYER_HAND;
