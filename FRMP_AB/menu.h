@@ -73,8 +73,8 @@ void drawTitleScreen()
     }
 
   }
-  sprites.drawSelfMasked(3, 21, titleName, 0);
-  sprites.drawSelfMasked(67, 21, titleName, 1);
+  sprites.drawSelfMasked(0, 21, titleName, 0);
+  sprites.drawSelfMasked(64, 21, titleName, 1);
 
   for (byte i = 0; i < (SMALL_MONSTERS_ON_ONE_LINE * 2); i++) sprites.drawSelfMasked(smallMonster[i].x, smallMonster[i].y, monstersSmall, smallMonster[i].frame);
 }
