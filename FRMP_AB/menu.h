@@ -28,14 +28,14 @@ void setSmallMonster()
     if (i < SMALL_MONSTERS_ON_ONE_LINE)
     {
       smallMonster[i].x = i * 20;
-      smallMonster[i].y = 4;
+      smallMonster[i].y = 2;
       smallMonster[i].frame = smallMonsterLineOne;
       smallMonsterLineOne++;
     }
     else
     {
       smallMonster[i].x = (i - SMALL_MONSTERS_ON_ONE_LINE) * 20;
-      smallMonster[i].y = 44;
+      smallMonster[i].y = 46;
       smallMonster[i].frame = smallMonsterLineTwo;
       smallMonsterLineTwo++;
     }
