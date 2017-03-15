@@ -33,10 +33,11 @@
 #define GAME_START_PLAYER_2_HAND       6
 #define GAME_COMPUTER_PLAY_HAND        7
 #define GAME_SHOW_COMPUTER_CARD_PLAYED 8
-#define GAME_DETERMINE_ROUND_WINNER    9
-#define GAME_SHOW_CARDS_IN_PLAY        10
-#define GAME_SHOW_WINNER               11
-#define GAME_SHOW_PLAYER_WAIT          12
+#define GAME_SHOW_2_PLAYER_CARD_PLAYED 9
+#define GAME_DETERMINE_ROUND_WINNER    10
+#define GAME_SHOW_CARDS_IN_PLAY        11
+#define GAME_SHOW_WINNER               12
+#define GAME_SHOW_PLAYER_WAIT          13
 
  char deck[DECK_SIZE];
  char player_p_hand[HAND_SIZE];
@@ -482,10 +483,14 @@ void stateShowDrawCard() {
         }      
       } else {
         //In 2 player mode, PLAYER_C = player 2
-        if (curr_player == PLAYER_C) {
-          disp_state = GAME_START_PLAYER_2_HAND;
+        if (card_in_play) {
+           disp_state = GAME_SHOW_2_PLAYER_CARD_PLAYED;
         } else {
-          disp_state = GAME_START_PLAYER_1_HAND;
+          if (curr_player == PLAYER_C) {
+            disp_state = GAME_START_PLAYER_2_HAND;
+          } else {
+            disp_state = GAME_START_PLAYER_1_HAND;
+          }
         }
       }
     }
@@ -582,6 +587,25 @@ void stateShowComputerCardPlayed() {
     }
 }
 
+void stateShow2PlayerCardPlayed() {
+    //to do: Determine previous player and show that card
+    char prev_player = PLAYER_C;
+    if (curr_player == PLAYER_C) prev_player = PLAYER_P;
+    
+    print_progmem(20, 0, text_player);
+    print_number(52,0, prev_player + 1);
+    print_progmem(60, 0, text_played);
+    
+    display_card (20,8,in_play[prev_player]);
+    if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+        if (curr_player == PLAYER_C) {
+          disp_state = GAME_START_PLAYER_2_HAND;
+        } else {
+          disp_state = GAME_START_PLAYER_1_HAND;
+        }
+    }
+}
+
 void stateShowCardsInPlay() {
     print_progmem(0, 0, text_player);
     print_number(32,0, PLAYER_P_score);
@@ -671,6 +695,10 @@ void stateGamePlaying()
 
     case GAME_SHOW_COMPUTER_CARD_PLAYED:
        stateShowComputerCardPlayed();
+       break;
+
+    case GAME_SHOW_2_PLAYER_CARD_PLAYED:
+       stateShow2PlayerCardPlayed();
        break;
 
     case GAME_DETERMINE_ROUND_WINNER:
