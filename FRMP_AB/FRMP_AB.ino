@@ -1,7 +1,7 @@
 /*
   Fantasy Rampage: http://www.team-arg.org/frmp-manual.html
 
-  Arduboy version 0.1:  http://www.team-arg.org/frmp-downloads.html
+  Arduboy version 0.8:  http://www.team-arg.org/frmp-downloads.html
 
   MADE by TEAM a.r.g. : http://www.team-arg.org/more-about.html
 

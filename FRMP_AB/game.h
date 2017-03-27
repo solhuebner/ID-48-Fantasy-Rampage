@@ -23,6 +23,12 @@
 #define IMG_BONUS      14
 #define IMG_WAIT       15
 #define IMG_BLANK      0
+#define IMG_ABILITY    15
+
+#define IMG_MINUS_1    16
+#define IMG_MINUS_2    17
+
+#define IMG_ABILITY_SPORE   18
 
 #define GAME_START_ROUND               0
 #define GAME_SHOW_START_ROUND          1
@@ -88,12 +94,12 @@ CardInfo get_card_info ( char card) {
     ret.suit = pgm_read_byte_near(card_info_data + index);
     ret.power = pgm_read_byte_near(card_info_data + (index+1));
     ret.img = pgm_read_byte_near(card_info_data + (index+2));
-    ret.text = pgm_read_byte_near(card_info_data + (index+3));
+    ret.ability = pgm_read_byte_near(card_info_data + (index+3));
   } else {
     ret.suit = 0;
     ret.power = 0;
     ret.img = 0;
-    ret.text = 0;
+    ret.ability = 0;
   }
   return ret;
 }
@@ -185,8 +191,19 @@ void display_card (char x, char y, char card) {
   sprites.drawOverwrite(curr_x+4, curr_y+4, card_8x8, inf.power);
   curr_y+=8;
   curr_x = x+16;
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
-  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+  //
+  if (game_mode == GAME_MODE_ADVANCED) {
+    if (inf.ability > -1) { 
+      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, inf.ability + IMG_ABILITY_SPORE);
+      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, IMG_MINUS_1);
+    } else {
+      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);       
+    }
+  } else {
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);    
+  }
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
   curr_y+=8;  
   curr_x = x;
