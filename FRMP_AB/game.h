@@ -401,7 +401,7 @@ void computer_play_hand(){
           if (thisCard.suit == current_suit) thisCard.power++;
           
           //look to see what ability modifiers are present on the other card and apply
-          if (currCard.ability > -1) {
+          if ((currCard.ability > -1) && (currCard.suit != thisCard.suit)){
              if ((currCard.ability == ABILITY_MAGIC)||(currCard.ability == ABILITY_HUNT)) {
                 thisCard.power -= 2;
              } else {
@@ -440,8 +440,8 @@ void determine_round_winner() {
    //If card(s) have abilities it will also affect their power
    if (game_mode == GAME_MODE_ADVANCED) {
       if (pCard.suit == current_suit) pCard.power++;
-      //look at the opponent's card to see if it has an ability
-      if (cCard.ability > -1) {
+      //look at the opponent's card to see if it has an ability (if of a different suit)
+      if ((cCard.ability > -1) && (cCard.suit != pCard.suit)) {
          if ((cCard.ability == ABILITY_MAGIC) || (cCard.ability == ABILITY_HUNT)) {
             pCard.power -=2;
          } else {
@@ -450,8 +450,8 @@ void determine_round_winner() {
       }
     
       if (cCard.suit == current_suit) cCard.power++;
-      //look at the opponent's card to see if it has an ability
-      if (pCard.ability > -1) {
+      //look at the opponent's card to see if it has an ability (if of a different suit)
+      if ((pCard.ability > -1) && (cCard.suit != pCard.suit)) {
          if ((pCard.ability == ABILITY_MAGIC) || (pCard.ability == ABILITY_HUNT)) {
             cCard.power -=2;
          } else {
@@ -810,7 +810,7 @@ void stateShowCardsInPlay() {
     }
     //determine modifiers for advanced play
     if (game_mode == GAME_MODE_ADVANCED) {
-      if (player_p_card.ability > -1) {
+      if ((player_p_card.ability > -1) && (player_p_card.suit != player_c_card.suit)){
         if((player_p_card.ability == ABILITY_MAGIC) || (player_p_card.ability == ABILITY_HUNT)) {
           player_p_mod = -2;
         } else {
@@ -818,7 +818,7 @@ void stateShowCardsInPlay() {
         }
       }
 
-       if (player_c_card.ability > -1) {
+       if ((player_c_card.ability > -1) && (player_p_card.suit != player_c_card.suit)) {
         if((player_c_card.ability == ABILITY_MAGIC) || (player_c_card.ability == ABILITY_HUNT)) {
           player_c_mod = -2;
         } else {
