@@ -5,7 +5,7 @@
 
 #define DECK_SIZE 48
 
-#define ABILITY_SPORE   0  //Earth -1
+#define ABILITY_TOXIC   0  //Earth -1
 #define ABILITY_BURN    1  //Fire  -1
 #define ABILITY_SWOOP   2  //Air   -1
 #define ABILITY_SPEAR   3  //Water -1 

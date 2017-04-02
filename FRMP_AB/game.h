@@ -28,7 +28,12 @@
 #define IMG_MINUS_1    16
 #define IMG_MINUS_2    17
 
-#define IMG_ABILITY_SPORE   18
+#define IMG_ABILITY_TOXIC   18
+#define IMG_ABILITY_BURN    19
+#define IMG_ABILITY_SWOOP   20
+#define IMG_ABILITY_SPEAR   21
+#define IMG_ABILITY_MAGIC   22
+#define IMG_ABILITY_HUNT    23
 
 #define GAME_START_ROUND               0
 #define GAME_SHOW_START_ROUND          1
@@ -171,14 +176,33 @@ char get_hand_size(char *hand) {
   return hand_size;
 }
 
-void display_card (char x, char y, char card) {
+void display_card (char x, char y, char card, char modifier) {
   char curr_x = x;
   char curr_y = y;
+  char curr_modifier = 0;
+  
   CardInfo inf = get_card_info(card);
 
   if (game_mode == GAME_MODE_ADVANCED) {
-    if (inf.suit == current_suit) {
-      sprites.drawOverwrite(curr_x+56, curr_y, card_8x8, IMG_BONUS);    
+    if (inf.suit == current_suit) curr_modifier = 1;
+    curr_modifier += modifier;
+
+    switch (curr_modifier) {
+      case 0:
+         break;
+         
+      case 1:
+         sprites.drawOverwrite(curr_x+56, curr_y, card_8x8, IMG_BONUS);    
+         break;
+
+      case -1:
+         sprites.drawOverwrite(curr_x+56, curr_y, card_8x8, IMG_MINUS_1);    
+         break;      
+
+     case -2:
+         sprites.drawOverwrite(curr_x+56, curr_y, card_8x8, IMG_MINUS_2);    
+         break;      
+      
     }
   }
   curr_y+=8;
@@ -192,21 +216,12 @@ void display_card (char x, char y, char card) {
   curr_y+=8;
   curr_x = x+16;
   //
-  if (game_mode == GAME_MODE_ADVANCED) {
-    if (inf.ability > -1) { 
-      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, inf.ability + IMG_ABILITY_SPORE);
-      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, IMG_MINUS_1);
-    } else {
-      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
-      sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);       
-    }
-  } else {
-    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);    
-  }
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);   
   sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
   curr_y+=8;  
   curr_x = x;
+
   for (char i=0; i< 4; i++) {
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 2);
     sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
@@ -218,8 +233,120 @@ void display_card (char x, char y, char card) {
     curr_y+=8;
     curr_x = x;
   }
+
+  if (game_mode == GAME_MODE_ADVANCED) {
+    if (inf.ability > -1) { 
+      sprites.drawOverwrite(x+28, y+16, card_8x8, inf.ability + IMG_ABILITY_TOXIC);
+      if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
+        sprites.drawOverwrite(x+36, y+16, card_8x8, IMG_MINUS_2);
+      } else {
+        sprites.drawOverwrite(x+36, y+16, card_8x8, IMG_MINUS_1);
+      }
+    }    
+  }
   
   sprites.drawOverwrite(x+20, y+24, monsters, inf.img);
+}
+
+void display_card_info(char x, char y, char card) {
+  char curr_x = x;
+  char curr_y = y+8;
+  CardInfo inf = get_card_info(card);
+
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 25);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 24);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 24);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 24);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 24);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 24);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 26);
+  curr_y+=8;  
+  curr_x = x;
+
+  for (char i=0; i< 4; i++) {
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 25);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 0);       
+    sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 26);
+    curr_y+=8;
+    curr_x = x;
+  }  
+
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 25);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 27);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 27);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 27);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 27);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 27);
+  sprites.drawOverwrite(curr_x+=8, curr_y, card_8x8, 26);
+
+  print_progmem(x+14, y+12, text_element);
+  sprites.drawOverwrite(x+46, y+12, card_8x8, inf.suit + 10);
+  
+  
+  print_progmem(x+14, y+20, text_power);
+  print_number(x+42, y+20, inf.power);
+
+  //draw bonus, if it is active on the card
+  if (inf.suit == current_suit) {
+     sprites.drawSelfMasked(x+46, y+19, card_8x8, IMG_BONUS);    
+  }
+
+  //if the card has an ability, draw the appropriate ability info
+
+  if (inf.ability > -1) {
+    switch (inf.ability) {
+      case ABILITY_TOXIC:
+      sprites.drawSelfMasked(x+46, y+27, card_8x8, IMG_ABILITY_TOXIC);  
+      print_progmem(x+14, y+27, text_toxic);
+      break;
+
+      case ABILITY_BURN:
+      sprites.drawSelfMasked(x+46, y+27, card_8x8, IMG_ABILITY_BURN);  
+      print_progmem(x+14, y+27, text_burn);      
+      break;      
+
+      case ABILITY_SWOOP:
+      sprites.drawSelfMasked(x+46, y+27, card_8x8, IMG_ABILITY_SWOOP);  
+      print_progmem(x+14, y+27, text_swoop);
+      break; 
+
+      case ABILITY_SPEAR:
+      sprites.drawSelfMasked(x+46, y+27, card_8x8, IMG_ABILITY_SPEAR);  
+      print_progmem(x+14, y+27, text_spear);
+      break; 
+
+      case ABILITY_MAGIC:
+      sprites.drawSelfMasked(x+46, y+27, card_8x8, IMG_ABILITY_MAGIC);  
+      print_progmem(x+14, y+27, text_magic);
+      break;
+
+      case ABILITY_HUNT:
+      sprites.drawSelfMasked(x+46, y+27, card_8x8, IMG_ABILITY_HUNT);  
+      print_progmem(x+14, y+27, text_hunt);
+      break;
+    }
+    if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
+      sprites.drawSelfMasked(x+28, y+35, card_8x8, IMG_MINUS_2);  
+    } else {
+      sprites.drawSelfMasked(x+28, y+35, card_8x8, IMG_MINUS_1);
+    }
+
+    //draw elements with vulnurabilty to the ability
+    curr_x = x+ 22;
+    for (char j=0; j < 4; j++) {
+        if (j != inf.suit) {
+            sprites.drawSelfMasked(curr_x, y+43, card_8x8, j+ 10);
+            curr_x += 9;
+        }
+    }
+    
+  }
+  
+  
 }
 
 void start_play_round() {
@@ -272,6 +399,16 @@ void computer_play_hand(){
 
         if (game_mode == GAME_MODE_ADVANCED) {
           if (thisCard.suit == current_suit) thisCard.power++;
+          
+          //look to see what ability modifiers are present on the other card and apply
+          if (currCard.ability > -1) {
+             if ((currCard.ability == ABILITY_MAGIC)||(currCard.ability == ABILITY_HUNT)) {
+                thisCard.power -= 2;
+             } else {
+                thisCard.power --;
+             }
+          }
+         
         }
         
         if (thisCard.power > currCard.power) {
@@ -299,9 +436,28 @@ void determine_round_winner() {
    
    //in advanced game mode, if the current suit == the card's 
    //suit it gets a +1 power boost
+
+   //If card(s) have abilities it will also affect their power
    if (game_mode == GAME_MODE_ADVANCED) {
-    if (pCard.suit == current_suit) pCard.power++;
-    if (cCard.suit == current_suit) cCard.power++;
+      if (pCard.suit == current_suit) pCard.power++;
+      //look at the opponent's card to see if it has an ability
+      if (cCard.ability > -1) {
+         if ((cCard.ability == ABILITY_MAGIC) || (cCard.ability == ABILITY_HUNT)) {
+            pCard.power -=2;
+         } else {
+            pCard.power --;
+         }
+      }
+    
+      if (cCard.suit == current_suit) cCard.power++;
+      //look at the opponent's card to see if it has an ability
+      if (pCard.ability > -1) {
+         if ((pCard.ability == ABILITY_MAGIC) || (pCard.ability == ABILITY_HUNT)) {
+            cCard.power -=2;
+         } else {
+            cCard.power --;
+         }
+      }
    }
 
    if(pCard.power == cCard.power) {
@@ -493,7 +649,12 @@ void stateShowStartRound() {
 
 void stateShowDrawCard() {
     print_progmem(20, 0, text_your_draw);
-    display_card (20,8,drawn[curr_player]);
+    if (game_mode == GAME_MODE_ADVANCED) {
+      display_card (4,8,drawn[curr_player],0);
+      display_card_info (64,8,drawn[curr_player]);
+    } else {
+      display_card (20,8,drawn[curr_player],0);
+    }
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
 
       if (player_mode == PLAYER_MODE_1_PLAYER) {
@@ -540,11 +701,11 @@ void stateShowPlayer1Hand () {
   
   //draw forward to hand_ptr
   for (char i=0; i < hand_ptr; i++) {
-       display_card((i*16),8,player_p_hand[i]);
+       display_card((i*16),8,player_p_hand[i],0);
   }
 
   for (char i=player_p_hand_size-1; i > (hand_ptr-1); i--) {
-       display_card((i*16),8,player_p_hand[i]);
+       display_card((i*16),8,player_p_hand[i],0);
   }
   if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) hand_ptr++;
   if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
@@ -579,11 +740,11 @@ void stateShowPlayer2Hand () {
   
   //draw forward to hand_ptr
   for (char i=0; i < hand_ptr; i++) {
-       display_card((i*16),8,player_c_hand[i]);
+       display_card((i*16),8,player_c_hand[i],0);
   }
 
   for (char i=player_c_hand_size-1; i > (hand_ptr-1); i--) {
-       display_card((i*16),8,player_c_hand[i]);
+       display_card((i*16),8,player_c_hand[i],0);
   }
   if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_c_hand_size)) hand_ptr++;
   if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
@@ -605,7 +766,7 @@ void stateShowPlayer2Hand () {
 void stateShowComputerCardPlayed() {
     print_progmem(20, 0, text_computer);
     print_progmem(56, 0, text_played);
-    display_card (20,8,in_play[PLAYER_C]);
+    display_card (20,8,in_play[PLAYER_C],0);
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
       disp_state = GAME_START_PLAYER_1_HAND;
     }
@@ -620,7 +781,7 @@ void stateShow2PlayerCardPlayed() {
     print_number(52,0, prev_player + 1);
     print_progmem(60, 0, text_played);
     
-    display_card (20,8,in_play[prev_player]);
+    display_card (20,8,in_play[prev_player],0);
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
         if (curr_player == PLAYER_C) {
           disp_state = GAME_START_PLAYER_2_HAND;
@@ -631,6 +792,11 @@ void stateShow2PlayerCardPlayed() {
 }
 
 void stateShowCardsInPlay() {
+    CardInfo player_p_card = get_card_info(in_play[PLAYER_P]);
+    CardInfo player_c_card = get_card_info(in_play[PLAYER_C]);
+    char player_p_mod = 0;
+    char player_c_mod = 0;
+    
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       print_progmem(0, 0, text_player);
       print_number(32,0, PLAYER_P_score);
@@ -642,14 +808,32 @@ void stateShowCardsInPlay() {
       print_progmem(64, 0, text_player_2);
       print_number(104,0, PLAYER_C_score);      
     }
+    //determine modifiers for advanced play
+    if (game_mode == GAME_MODE_ADVANCED) {
+      if (player_p_card.ability > -1) {
+        if((player_p_card.ability == ABILITY_MAGIC) || (player_p_card.ability == ABILITY_HUNT)) {
+          player_p_mod = -2;
+        } else {
+          player_p_mod = -1;
+        }
+      }
+
+       if (player_c_card.ability > -1) {
+        if((player_c_card.ability == ABILITY_MAGIC) || (player_c_card.ability == ABILITY_HUNT)) {
+          player_c_mod = -2;
+        } else {
+          player_c_mod = -1;
+        }        
+      }     
+    }
     
     if (in_play[PLAYER_P] > -1) {
       if (last_winner == PLAYER_P) print_progmem(8, 8, text_win);
-      display_card (0,8,in_play[PLAYER_P]);
+      display_card (0,8,in_play[PLAYER_P],player_c_mod);
     }
     if (in_play[PLAYER_C] > -1) {
       if (last_winner == PLAYER_C) print_progmem(72, 8, text_win);
-      display_card (64,8,in_play[PLAYER_C]);
+      display_card (64,8,in_play[PLAYER_C],player_p_mod);
     }
     if (arduboy.justPressed(A_BUTTON | B_BUTTON)) 
     {
