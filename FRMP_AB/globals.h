@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <Arduboy2.h>
+//#include <ATMlib.h>
 #include <Sprites.h>
 #include "bitmaps.h"
 
@@ -24,6 +25,7 @@
 
 Arduboy2Base arduboy;
 Sprites sprites;
+//ATMsynth ATM;
 
 byte gameState = STATE_MENU_INTRO;   // start the game with the TEAM a.r.g. logo
 byte menuSelection = STATE_MENU_PLAY; // PLAY menu item is pre-selected

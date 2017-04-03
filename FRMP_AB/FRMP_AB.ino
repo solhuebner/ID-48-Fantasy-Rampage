@@ -40,6 +40,7 @@ void setup() {
   arduboy.begin();
   arduboy.setFrameRate(30);                                 // set the frame rate of the game at 30 fps
   arduboy.initRandomSeed();                                 // This sets the random to more random, remove this if no random is needed !
+  arduboy.audio.on();
 }
 
 

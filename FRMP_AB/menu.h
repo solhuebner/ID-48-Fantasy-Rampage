@@ -3,6 +3,7 @@
 
 #include "globals.h"
 #include "font.h"
+#include "song_data.h"
 
 #define SMALL_MONSTERS_ON_ONE_LINE                      8
 
@@ -92,6 +93,7 @@ void stateMenuIntro()
 
 void stateMenuMain()
 {
+  //ATM.play(music);
   drawTitleScreen();
   print_progmem(8, 36, text_help);
   print_progmem(32, 36, text_play);
@@ -100,7 +102,10 @@ void stateMenuMain()
 
   if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
   if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
-  if (arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
+  if (arduboy.justPressed(B_BUTTON)) {
+    //ATM.stop();
+    gameState = menuSelection;
+  }
 }
 
 void stateMenuHelp()
