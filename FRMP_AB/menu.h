@@ -57,7 +57,7 @@ void drawTitleScreen()
         {
           smallMonster[i].x = 144;
           smallMonster[i].frame = smallMonsterLineOne;
-          smallMonsterLineOne = (++smallMonsterLineOne)%24;
+          smallMonsterLineOne = (++smallMonsterLineOne) % 24;
 
         }
       }
@@ -68,7 +68,7 @@ void drawTitleScreen()
         {
           smallMonster[i].x = -16;
           smallMonster[i].frame = smallMonsterLineTwo;
-          smallMonsterLineTwo = (++smallMonsterLineTwo)%24;
+          smallMonsterLineTwo = (++smallMonsterLineTwo) % 24;
         }
       }
     }
@@ -93,9 +93,6 @@ void stateMenuIntro()
 
 void stateMenuMain()
 {
-  #ifndef AB_DEVKIT
-  ATM.play(music);
-  #endif
 
   drawTitleScreen();
   print_progmem(8, 36, text_help);
@@ -106,11 +103,7 @@ void stateMenuMain()
   if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
   if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
   if (arduboy.justPressed(B_BUTTON)) {
-
-  #ifndef AB_DEVKIT
-  ATM.stop();
-  #endif
-  
+    ATM.stop();
     gameState = menuSelection;
   }
 }

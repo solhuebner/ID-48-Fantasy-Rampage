@@ -3,13 +3,7 @@
 
 #include <Arduino.h>
 #include <Arduboy2.h>
-
-//only include if it is not the DevKit version
-//(DevKit cannot use ATMLib)
-#ifndef AB_DEVKIT
 #include <ATMlib.h>
-#endif
-
 #include <Sprites.h>
 #include "bitmaps.h"
 
@@ -32,9 +26,8 @@
 Arduboy2Base arduboy;
 Sprites sprites;
 
-#ifndef AB_DEVKIT
 ATMsynth ATM;
-#endif
+
 
 byte gameState = STATE_MENU_INTRO;   // start the game with the TEAM a.r.g. logo
 byte menuSelection = STATE_MENU_PLAY; // PLAY menu item is pre-selected
