@@ -102,6 +102,8 @@ void stateMenuMain()
 
   if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
   if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
+  
+  print_progmem(4+((menuSelection-2) * 24), 36,text_pointer);
   if (arduboy.justPressed(B_BUTTON)) {
     ATM.stop();
     gameState = menuSelection;
