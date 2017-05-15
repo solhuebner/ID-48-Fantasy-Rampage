@@ -75,7 +75,6 @@ void drawTitleScreen()
 
   }
   sprites.drawSelfMasked(0, 21, titleName, 0);
-  sprites.drawSelfMasked(64, 21, titleName, 1);
 
   for (byte i = 0; i < (SMALL_MONSTERS_ON_ONE_LINE * 2); i++) sprites.drawSelfMasked(smallMonster[i].x, smallMonster[i].y, monstersSmall, smallMonster[i].frame);
 }
@@ -83,7 +82,7 @@ void drawTitleScreen()
 void stateMenuIntro()
 {
   globalCounter++;
-  sprites.drawSelfMasked(34, 0, T_arg, 0);
+  sprites.drawSelfMasked(34, 4, T_arg, 0);
   if (globalCounter > 120)
   {
     gameState = STATE_MENU_MAIN;
@@ -95,15 +94,13 @@ void stateMenuMain()
 {
 
   drawTitleScreen();
-  print_progmem(8, 36, text_help);
-  print_progmem(32, 36, text_play);
-  print_progmem(56, 36, text_info);
-  print_progmem(84, 36, text_sound);
-
+  sprites.drawSelfMasked(20, 38, titleMenu, 0);
+  sprites.drawSelfMasked(18 + ((menuSelection - 2) * 23), 36, selectorTop, 0);
+  sprites.drawPlusMask(17 + ((menuSelection - 2) * 23), 44, selectorMid_plus_mask, 0);
+  
   if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
   if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
-  
-  print_progmem(4+((menuSelection-2) * 24), 36,text_pointer);
+
   if (arduboy.justPressed(B_BUTTON)) {
     ATM.stop();
     gameState = menuSelection;
@@ -112,7 +109,7 @@ void stateMenuMain()
 
 void stateMenuHelp()
 {
-  //  for (byte i = 0; i < 2; i++) sprites.drawSelfMasked(32, 32 * i, qrcode, i);
+  sprites.drawSelfMasked(32, 0, qrcodeFRMP, 0);
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
 }
 
@@ -125,7 +122,10 @@ void stateMenuInfo()
 
 void stateMenuSoundfx()
 {
-  //  sprites.drawSelfMasked(28, 8, titleScreen, 0);
+  drawTitleScreen();
+  sprites.drawSelfMasked(31, 38, soundMenu, 0);
+  sprites.drawSelfMasked(58 + (arduboy.audio.enabled() * 23), 36, selectorTop, 0);
+  sprites.drawPlusMask(57 + (arduboy.audio.enabled() * 23), 44, selectorMid_plus_mask, 0);
   if (arduboy.justPressed(RIGHT_BUTTON)) arduboy.audio.on();
   if (arduboy.justPressed(LEFT_BUTTON)) arduboy.audio.off();
   if (arduboy.justPressed(A_BUTTON | B_BUTTON))
