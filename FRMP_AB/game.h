@@ -80,7 +80,7 @@ char wait_loop = 0;
 char game_mode = GAME_MODE_BASIC;
 char player_mode = PLAYER_MODE_1_PLAYER;
 char disp_state = GAME_SHOW_DRAW_CARD;
-char prev_disp_state = GAME_SHOW_DRAW_CARD;
+char prev_disp_state = disp_state;
 char current_suit = SUIT_EARTH;
 
 boolean quitYesNo = false ;
@@ -194,57 +194,54 @@ void display_card (char x, char y, char card, char modifier) {
     switch (curr_modifier) {
       case 0:
         break;
-
       case 1:
-        sprites.drawOverwrite(curr_x + 56, curr_y, card_8x8, IMG_BONUS);
+        sprites.drawOverwrite(curr_x + 56, curr_y, cardSprites, IMG_BONUS);
         break;
-
       case -1:
-        sprites.drawOverwrite(curr_x + 56, curr_y, card_8x8, IMG_MINUS_1);
+        sprites.drawOverwrite(curr_x + 56, curr_y, cardSprites, IMG_MINUS_1);
         break;
-
       case -2:
-        sprites.drawOverwrite(curr_x + 56, curr_y, card_8x8, IMG_MINUS_2);
+        sprites.drawOverwrite(curr_x + 56, curr_y, cardSprites, IMG_MINUS_2);
         break;
 
     }
   }
   curr_y += 8;
   sprites.drawPlusMask(curr_x += 8, curr_y, cardCorners_plus_mask, 0);
-  sprites.drawOverwrite(curr_x + 4, curr_y + 4, card_8x8, inf.suit + 10);
-  sprites.drawOverwrite(curr_x += 16, curr_y, card_8x8, 1);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 1);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 1);
+  sprites.drawOverwrite(curr_x + 4, curr_y + 4, cardSprites, inf.suit + 10);
+  sprites.drawOverwrite(curr_x += 16, curr_y, cardSprites, 1);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 1);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 1);
   sprites.drawPlusMask(curr_x += 8, curr_y, cardCorners_plus_mask, 1);
-  sprites.drawOverwrite(curr_x + 4, curr_y + 4, card_8x8, inf.power);
+  sprites.drawOverwrite(curr_x + 4, curr_y + 4, cardSprites, inf.power);
   curr_y += 8;
   curr_x = x + 16;
   //
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
   curr_y += 8;
   curr_x = x;
 
   for (char i = 0; i < 4; i++) {
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 2);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 3);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 2);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 3);
     curr_y += 8;
     curr_x = x;
   }
 
   if (game_mode == GAME_MODE_ADVANCED) {
     if (inf.ability > -1) {
-      sprites.drawOverwrite(x + 28, y + 16, card_8x8, inf.ability + IMG_ABILITY_TOXIC);
+      sprites.drawOverwrite(x + 28, y + 16, cardSprites, inf.ability + IMG_ABILITY_TOXIC);
       if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
-        sprites.drawOverwrite(x + 36, y + 16, card_8x8, IMG_MINUS_2);
+        sprites.drawOverwrite(x + 36, y + 16, cardSprites, IMG_MINUS_2);
       } else {
-        sprites.drawOverwrite(x + 36, y + 16, card_8x8, IMG_MINUS_1);
+        sprites.drawOverwrite(x + 36, y + 16, cardSprites, IMG_MINUS_1);
       }
     }
   }
@@ -257,38 +254,38 @@ void display_card_info(char x, char y, char card) {
   char curr_y = y + 8;
   CardInfo inf = get_card_info(card);
 
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 25);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 26);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 25);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 26);
   curr_y += 8;
   curr_x = x;
 
   for (char i = 0; i < 4; i++) {
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 25);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 26);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 25);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
+    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 26);
     curr_y += 8;
     curr_x = x;
   }
 
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 25);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, card_8x8, 26);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 25);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
+  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 26);
 
   print_progmem(x + 14, y + 12, text_element);
-  sprites.drawOverwrite(x + 46, y + 12, card_8x8, inf.suit + 10);
+  sprites.drawOverwrite(x + 46, y + 12, cardSprites, inf.suit + 10);
 
 
   print_progmem(x + 14, y + 20, text_power);
@@ -296,7 +293,7 @@ void display_card_info(char x, char y, char card) {
 
   //draw bonus, if it is active on the card
   if (inf.suit == current_suit) {
-    sprites.drawSelfMasked(x + 46, y + 19, card_8x8, IMG_BONUS);
+    sprites.drawSelfMasked(x + 46, y + 19, cardSprites, IMG_BONUS);
   }
 
   //if the card has an ability, draw the appropriate ability info
@@ -304,46 +301,46 @@ void display_card_info(char x, char y, char card) {
   if (inf.ability > -1) {
     switch (inf.ability) {
       case ABILITY_TOXIC:
-        sprites.drawSelfMasked(x + 46, y + 27, card_8x8, IMG_ABILITY_TOXIC);
+        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_TOXIC);
         print_progmem(x + 14, y + 27, text_toxic);
         break;
 
       case ABILITY_BURN:
-        sprites.drawSelfMasked(x + 46, y + 27, card_8x8, IMG_ABILITY_BURN);
+        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_BURN);
         print_progmem(x + 14, y + 27, text_burn);
         break;
 
       case ABILITY_SWOOP:
-        sprites.drawSelfMasked(x + 46, y + 27, card_8x8, IMG_ABILITY_SWOOP);
+        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_SWOOP);
         print_progmem(x + 14, y + 27, text_swoop);
         break;
 
       case ABILITY_SPEAR:
-        sprites.drawSelfMasked(x + 46, y + 27, card_8x8, IMG_ABILITY_SPEAR);
+        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_SPEAR);
         print_progmem(x + 14, y + 27, text_spear);
         break;
 
       case ABILITY_MAGIC:
-        sprites.drawSelfMasked(x + 46, y + 27, card_8x8, IMG_ABILITY_MAGIC);
+        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_MAGIC);
         print_progmem(x + 14, y + 27, text_magic);
         break;
 
       case ABILITY_HUNT:
-        sprites.drawSelfMasked(x + 46, y + 27, card_8x8, IMG_ABILITY_HUNT);
+        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_HUNT);
         print_progmem(x + 14, y + 27, text_hunt);
         break;
     }
     if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
-      sprites.drawSelfMasked(x + 28, y + 35, card_8x8, IMG_MINUS_2);
+      sprites.drawSelfMasked(x + 28, y + 35, cardSprites, IMG_MINUS_2);
     } else {
-      sprites.drawSelfMasked(x + 28, y + 35, card_8x8, IMG_MINUS_1);
+      sprites.drawSelfMasked(x + 28, y + 35, cardSprites, IMG_MINUS_1);
     }
 
     //draw elements with vulnurabilty to the ability
     curr_x = x + 22;
     for (char j = 0; j < 4; j++) {
       if (j != inf.suit) {
-        sprites.drawSelfMasked(curr_x, y + 43, card_8x8, j + 10);
+        sprites.drawSelfMasked(curr_x, y + 43, cardSprites, j + 10);
         curr_x += 9;
       }
     }
@@ -492,7 +489,7 @@ void stateShowPlayerWait() {
   print_number(80, 12, curr_player + 1);
 
   for (char i = 0; i < wait_loop; i++) {
-    sprites.drawSelfMasked(16 * i + 36, 44, card_8x8, IMG_WAIT);
+    sprites.drawSelfMasked(16 * i + 36, 44, cardSprites, IMG_WAIT);
   }
 
   if (wait_loop <= 3) {
@@ -564,6 +561,8 @@ void startGame() {
   startPlayRound();
 }
 
+
+
 //------------------------
 void stateMenuPlay()
 {
@@ -572,7 +571,6 @@ void stateMenuPlay()
 };
 
 void stateGameSelectPlayerMode() {
-  gameState = STATE_GAME_SELECT_PLAYER_MODE;
   print_progmem(24, 12, text_select_player_mode);
   print_progmem(32, 24, text_1_player);
   print_progmem(32, 36, text_2_player);
@@ -587,7 +585,6 @@ void stateGameSelectPlayerMode() {
 }
 
 void stateGameSelectGameMode() {
-  gameState = STATE_GAME_SELECT_GAME_MODE;
   print_progmem(24, 12, text_select_game_mode);
   print_progmem(32, 24, text_basic);
   print_progmem(32, 36, text_advanced);
@@ -618,7 +615,7 @@ void stateShowStartRound() {
 
   if (game_mode == GAME_MODE_ADVANCED) {
     print_progmem(64, 8, text_element);
-    sprites.drawOverwrite(96, 8, card_8x8, current_suit + 10);
+    sprites.drawOverwrite(96, 8, cardSprites, current_suit + 10);
     sprites.drawOverwrite(32, 16, map_64x48, 0);
 
     for (char i = 0; i < MAX_ROUNDS; i++) {

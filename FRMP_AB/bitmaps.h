@@ -133,7 +133,7 @@ const unsigned char PROGMEM selectorMid_plus_mask[] =
 };
 
 
-const unsigned char PROGMEM card_8x8[] =
+const unsigned char PROGMEM cardSprites[] =
 {
   // width, height,
   8, 8,
