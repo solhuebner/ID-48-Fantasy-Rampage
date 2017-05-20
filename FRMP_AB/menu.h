@@ -86,6 +86,7 @@ void stateMenuIntro()
   if (globalCounter > 120)
   {
     gameState = STATE_MENU_MAIN;
+    ATM.play(music);
     setSmallMonster();
   }
 }
@@ -100,11 +101,7 @@ void stateMenuMain()
   
   if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
   if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
-
-  if (arduboy.justPressed(B_BUTTON)) {
-    ATM.stop();
-    gameState = menuSelection;
-  }
+  if (arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
 }
 
 void stateMenuHelp()

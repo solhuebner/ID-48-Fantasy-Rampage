@@ -19,8 +19,6 @@
 #define STATE_GAME_SELECT_GAME_MODE   6
 #define STATE_GAME_SELECT_PLAYER_MODE 7
 #define STATE_GAME_PLAYING            8
-#define STATE_GAME_PAUSE              9
-#define STATE_GAME_OVER               10
 
 
 Arduboy2Base arduboy;
