@@ -697,16 +697,19 @@ void stateStartPlayer2Hand () {
 }
 
 void stateShowPlayer1Hand () {
-  print_progmem(20, 0, text_pick_card_to_play);
-  print_number (100, 0, player_p_hand_size);
+  print_progmem(26, 0, text_pick_card_to_play);
+  //print_number (100, 0, player_p_hand_size);
 
   //draw forward to hand_ptr
-  for (char i = 0; i < hand_ptr; i++) {
-    display_card((i * 16), 8, player_p_hand[i], 0);
+  for (char i = 0; i < hand_ptr; i++) 
+  {
+    display_card((i * 16) - 4, 16, player_p_hand[i], 0);
   }
-
-  for (char i = player_p_hand_size - 1; i > (hand_ptr - 1); i--) {
-    display_card((i * 16), 8, player_p_hand[i], 0);
+  
+  for (char i = player_p_hand_size - 1; i > (hand_ptr - 1); i--)
+  {
+    if (i > hand_ptr) display_card((i * 16) - 4, 16, player_p_hand[i], 0);
+    else display_card((i * 16) -4 , 8, player_p_hand[i], 0);
   }
 
   if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) hand_ptr++;
@@ -737,16 +740,18 @@ void stateShowPlayer1Hand () {
 
 //only used in 2 player mode
 void stateShowPlayer2Hand () {
-  print_progmem(20, 0, text_pick_card_to_play);
-  print_number (100, 0, player_c_hand_size);
+  print_progmem(26, 0, text_pick_card_to_play);
+  //print_number (100, 0, player_c_hand_size);
 
   //draw forward to hand_ptr
   for (char i = 0; i < hand_ptr; i++) {
-    display_card((i * 16), 8, player_c_hand[i], 0);
+    display_card((i * 16) - 4, 16, player_c_hand[i], 0);
   }
 
-  for (char i = player_c_hand_size - 1; i > (hand_ptr - 1); i--) {
-    display_card((i * 16), 8, player_c_hand[i], 0);
+  for (char i = player_c_hand_size - 1; i > (hand_ptr - 1); i--)
+  {
+    if (i > hand_ptr)display_card((i * 16) - 4, 16, player_c_hand[i], 0);
+    else display_card((i * 16) - 4, 8, player_c_hand[i], 0);
   }
   if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_c_hand_size)) hand_ptr++;
   if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
