@@ -709,12 +709,9 @@ const unsigned char PROGMEM map_marker_4x4[] =
 };
 
 
-const char PROGMEM text_2017_trodoss[] = {"2017 Trodoss"};
+const char PROGMEM text_info[] = {"2017 TRODOSS - JO3RI"};
 const char PROGMEM text_pointer[] = {">"};
-const char PROGMEM text_help[] = {"Help"};
 const char PROGMEM text_play[] = {"Play"};
-const char PROGMEM text_info[] = {"Info"};
-const char PROGMEM text_sound[] = {"Sound"};
 const char PROGMEM text_select_game_mode[] = {"Select Game Mode"};
 const char PROGMEM text_basic[] = {"Basic"};
 const char PROGMEM text_advanced[] = {"Advanced"};
@@ -724,7 +721,7 @@ const char PROGMEM text_2_player[] = {"2 Player"};
 const char PROGMEM text_start_round[] = {"Start Round"};
 const char PROGMEM text_element[] = {"Element"};
 const char PROGMEM text_your_draw[] = {"Your Draw"};
-const char PROGMEM text_pick_card_to_play[] = {"Pick Card to Play"};
+const char PROGMEM text_pick_card_to_play[] = {"Pick a Card to Play"};
 const char PROGMEM text_player[] = {"Player"};
 const char PROGMEM text_computer[] = {"Computer"};
 const char PROGMEM text_player_1[] = {"Player 1"};

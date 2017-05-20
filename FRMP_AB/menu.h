@@ -113,7 +113,8 @@ void stateMenuHelp()
 
 void stateMenuInfo()
 {
-  //  sprites.drawSelfMasked(16, 36, info, 0);
+  drawTitleScreen();
+  print_progmem(22, 37, text_info);
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
 }
 

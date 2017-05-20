@@ -1,11 +1,11 @@
 /*
   Fantasy Rampage: http://www.team-arg.org/frmp-manual.html
 
-  Arduboy version 0.8:  http://www.team-arg.org/frmp-downloads.html
+  Arduboy version 0.9:  http://www.team-arg.org/frmp-downloads.html
 
   MADE by TEAM a.r.g. : http://www.team-arg.org/more-about.html
 
-  2017 - Trodoss
+  2017 - Trodoss - JO3RI
 
   License: MIT : https://opensource.org/licenses/MIT
 
@@ -38,6 +38,7 @@ void setup() {
   arduboy.begin();
   arduboy.setFrameRate(30);                                 // set the frame rate of the game at 30 fps
   arduboy.initRandomSeed();                                 // This sets the random to more random, remove this if no random is needed !
+  ATM.play(music);
 }
 
 

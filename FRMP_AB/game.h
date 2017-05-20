@@ -49,7 +49,6 @@
 #define GAME_SHOW_CARDS_IN_PLAY        11
 #define GAME_SHOW_WINNER               12
 #define GAME_SHOW_PLAYER_WAIT          13
-#define GAME_SHOW_REALLY_QUIT          14
 
 char deck[DECK_SIZE];
 char player_p_hand[HAND_SIZE];
@@ -194,12 +193,15 @@ void display_card (char x, char y, char card, char modifier) {
     switch (curr_modifier) {
       case 0:
         break;
+
       case 1:
         sprites.drawOverwrite(curr_x + 56, curr_y, cardSprites, IMG_BONUS);
         break;
+
       case -1:
         sprites.drawOverwrite(curr_x + 56, curr_y, cardSprites, IMG_MINUS_1);
         break;
+
       case -2:
         sprites.drawOverwrite(curr_x + 56, curr_y, cardSprites, IMG_MINUS_2);
         break;
@@ -561,13 +563,10 @@ void startGame() {
   startPlayRound();
 }
 
-
-
 //------------------------
 void stateMenuPlay()
 {
   gameState = STATE_GAME_SELECT_GAME_MODE;
-  ATM.stop();
 };
 
 void stateGameSelectPlayerMode() {
@@ -626,12 +625,7 @@ void stateShowStartRound() {
     }
 
   }
-  if (arduboy.justPressed(UP_BUTTON))
-  {
-    prev_disp_state = disp_state;
-    disp_state = GAME_SHOW_REALLY_QUIT;
-  }
-  else if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     //if 1 player mode, then go on to draw
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       if (!deck_drawn) {
@@ -662,12 +656,7 @@ void stateShowDrawCard() {
   } else {
     display_card (20, 8, drawn[curr_player], 0);
   }
-  if (arduboy.justPressed(UP_BUTTON))
-  {
-    prev_disp_state = disp_state;
-    disp_state = GAME_SHOW_REALLY_QUIT;
-  }
-  else if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
 
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       //use last_winner to detremine who can play first:
@@ -719,14 +708,10 @@ void stateShowPlayer1Hand () {
   for (char i = player_p_hand_size - 1; i > (hand_ptr - 1); i--) {
     display_card((i * 16), 8, player_p_hand[i], 0);
   }
-  if (arduboy.justPressed(UP_BUTTON))
-  {
-    prev_disp_state = disp_state;
-    disp_state = GAME_SHOW_REALLY_QUIT;
-  }
-  else if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) hand_ptr++;
-  else if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
-  else if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+
+  if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) hand_ptr++;
+  if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     in_play[PLAYER_P] = player_p_hand[hand_ptr];
     player_p_hand[hand_ptr] = -1;
 
@@ -763,14 +748,9 @@ void stateShowPlayer2Hand () {
   for (char i = player_c_hand_size - 1; i > (hand_ptr - 1); i--) {
     display_card((i * 16), 8, player_c_hand[i], 0);
   }
-  if (arduboy.justPressed(UP_BUTTON))
-  {
-    prev_disp_state = disp_state;
-    disp_state = GAME_SHOW_REALLY_QUIT;
-  }
-  else if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_c_hand_size)) hand_ptr++;
-  else if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
-  else if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+  if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_c_hand_size)) hand_ptr++;
+  if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     in_play[PLAYER_C] = player_c_hand[hand_ptr];
     player_c_hand[hand_ptr] = -1;
 
@@ -789,8 +769,7 @@ void stateShowComputerCardPlayed() {
   print_progmem(20, 0, text_computer);
   print_progmem(56, 0, text_played);
   display_card (20, 8, in_play[PLAYER_C], 0);
-  if (arduboy.justPressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
-  else if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     disp_state = GAME_START_PLAYER_1_HAND;
   }
 }
@@ -805,12 +784,7 @@ void stateShow2PlayerCardPlayed() {
   print_progmem(60, 0, text_played);
 
   display_card (20, 8, in_play[prev_player], 0);
-  if (arduboy.justPressed(UP_BUTTON))
-  {
-    prev_disp_state = disp_state;
-    disp_state = GAME_SHOW_REALLY_QUIT;
-  }
-  else if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     if (curr_player == PLAYER_C) {
       disp_state = GAME_START_PLAYER_2_HAND;
     } else {
@@ -863,12 +837,7 @@ void stateShowCardsInPlay() {
     if (last_winner == PLAYER_C) print_progmem(72, 8, text_win);
     display_card (64, 8, in_play[PLAYER_C], player_p_mod);
   }
-  if (arduboy.justPressed(UP_BUTTON))
-  {
-    prev_disp_state = disp_state;
-    disp_state = GAME_SHOW_REALLY_QUIT;
-  }
-  else if (arduboy.justPressed(A_BUTTON | B_BUTTON))
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON))
   {
     if (game_mode == GAME_MODE_ADVANCED) current_suit++;
     if (current_suit > 3) current_suit = 0;
@@ -947,28 +916,67 @@ void stateShowReallyQuit() {
   }
 }
 
+void stateGamePlaying()
+{
+  gameState = STATE_GAME_PLAYING;
+  switch (disp_state) {
+    case GAME_START_ROUND:
+      startPlayRound();
+      break;
 
-typedef void (*FunctionPointer) ();
-const FunctionPointer PROGMEM gamePlayingLoop[] = {
-  startPlayRound,
-  stateShowStartRound,
-  stateShowDrawCard,
-  stateStartPlayer1Hand,
-  stateStartPlayer2Hand,
-  stateShowPlayer1Hand,
-  stateShowPlayer2Hand,
-  computer_play_hand,
-  stateShowComputerCardPlayed,
-  stateShow2PlayerCardPlayed,
-  determine_round_winner,
-  stateShowCardsInPlay,
-  stateShowWinner,
-  stateShowPlayerWait,
-  stateShowReallyQuit,
-};
+    case GAME_SHOW_START_ROUND:
+      stateShowStartRound();
+      break;
 
-void stateGamePlaying() {
-  ((FunctionPointer) pgm_read_word (&gamePlayingLoop[disp_state]))();
+    case GAME_SHOW_DRAW_CARD:
+      stateShowDrawCard();
+      break;
+
+    case GAME_START_PLAYER_1_HAND:
+      stateStartPlayer1Hand();
+      break;
+
+    case GAME_START_PLAYER_2_HAND:
+      stateStartPlayer2Hand();
+      break;
+
+    case GAME_SHOW_PLAYER_1_HAND:
+      stateShowPlayer1Hand();
+      break;
+
+    case GAME_SHOW_PLAYER_2_HAND:
+      stateShowPlayer2Hand();
+      break;
+
+    case GAME_COMPUTER_PLAY_HAND:
+      computer_play_hand();
+      break;
+
+    case GAME_SHOW_COMPUTER_CARD_PLAYED:
+      stateShowComputerCardPlayed();
+      break;
+
+    case GAME_SHOW_2_PLAYER_CARD_PLAYED:
+      stateShow2PlayerCardPlayed();
+      break;
+
+    case GAME_DETERMINE_ROUND_WINNER:
+      determine_round_winner();
+      break;
+
+    case GAME_SHOW_CARDS_IN_PLAY:
+      stateShowCardsInPlay();
+      break;
+
+    case GAME_SHOW_WINNER:
+      stateShowWinner();
+      break;
+
+    case GAME_SHOW_PLAYER_WAIT:
+      stateShowPlayerWait();
+      break;
+
+  }
 };
 
 
