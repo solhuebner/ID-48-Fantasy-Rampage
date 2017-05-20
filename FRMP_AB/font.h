@@ -7,8 +7,8 @@ void print_progmem(uint8_t x, uint8_t y, const char str[]) {
   char c;
   while ((c = pgm_read_byte(str))) {
     str++;
-    x+= 4;
     sprites.drawSelfMasked(x,y,fontSmall, c-32);
+    x+= 4;
   }
 }
 
