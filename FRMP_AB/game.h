@@ -649,12 +649,12 @@ void stateShowStartRound() {
 }
 
 void stateShowDrawCard() {
-  print_progmem(20, 0, text_your_draw);
+  print_progmem(30, 0, text_your_draw);
   if (game_mode == GAME_MODE_ADVANCED) {
     display_card (4, 8, drawn[curr_player], 0);
     display_card_info (64, 8, drawn[curr_player]);
   } else {
-    display_card (20, 8, drawn[curr_player], 0);
+    display_card (28, 8, drawn[curr_player], 0);
   }
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
 

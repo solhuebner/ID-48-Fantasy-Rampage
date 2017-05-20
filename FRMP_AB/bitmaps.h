@@ -720,7 +720,7 @@ const char PROGMEM text_1_player[] = {"1 Player"};
 const char PROGMEM text_2_player[] = {"2 Player"};
 const char PROGMEM text_start_round[] = {"Start Round"};
 const char PROGMEM text_element[] = {"Element"};
-const char PROGMEM text_your_draw[] = {"Your Draw"};
+const char PROGMEM text_your_draw[] = {"The Card You Drew"};
 const char PROGMEM text_pick_card_to_play[] = {"Pick a Card to Play"};
 const char PROGMEM text_player[] = {"Player"};
 const char PROGMEM text_computer[] = {"Computer"};
@@ -736,7 +736,7 @@ const char PROGMEM text_swoop[] = {"Swoop"};
 const char PROGMEM text_spear[] = {"Spear"};
 const char PROGMEM text_magic[] = {"Magic"};
 const char PROGMEM text_hunt[] = {"Hunt"};
-const char PROGMEM text_quit[] = {"Do you really want to quit ?"};
+const char PROGMEM text_quit[] = {"Do You Really Want to Quit ?"};
 const char PROGMEM text_yes_no[] = {"YES   NO"};
 
 
