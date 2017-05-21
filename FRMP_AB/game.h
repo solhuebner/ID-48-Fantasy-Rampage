@@ -205,6 +205,13 @@ void display_card (char x, char y, char card, char modifier) {
         break;
     }
   }
+  /*
+     IMG_BONUS   14
+     IMG_
+     IMG_MINUS_1 16
+     IMG_MINUS_2 17
+
+  */
 
   byte i = 0;
   byte j = 0;
@@ -234,43 +241,26 @@ void display_card (char x, char y, char card, char modifier) {
       }
     }
   }
-  
+
 }
 
 void display_card_info(char x, char y, char card) {
-  char curr_x = x;
-  char curr_y = y + 8;
   CardInfo inf = get_card_info(card);
 
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 25);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 24);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 26);
-  curr_y += 8;
-  curr_x = x;
-
-  for (char i = 0; i < 4; i++) {
-    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 25);
-    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 0);
-    sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 26);
-    curr_y += 8;
-    curr_x = x;
+  byte i = 0;
+  byte j = 0;
+  byte k = 0;
+  while (i < 42)
+  {
+    if (j > 6)
+    {
+      j = 0;
+      k++;
+    }
+    sprites.drawOverwrite(x + (8 * j), y + (8 * k), cardInfo, pgm_read_byte(&cardInfoShape[i]));
+    j++;
+    i++;
   }
-
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 25);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 27);
-  sprites.drawOverwrite(curr_x += 8, curr_y, cardSprites, 26);
 
   print_progmem(x + 14, y + 12, text_element);
   sprites.drawOverwrite(x + 46, y + 12, cardSprites, inf.suit + 10);
@@ -325,10 +315,10 @@ void display_card_info(char x, char y, char card) {
     }
 
     //draw elements with vulnurabilty to the ability
-    curr_x = x + 22;
+    char curr_x = x + 22;
     for (char j = 0; j < 4; j++) {
       if (j != inf.suit) {
-        sprites.drawSelfMasked(curr_x, y + 43, cardSprites, j + 10);
+        sprites.drawSelfMasked(x + 22, y + 43, cardSprites, j + 10);
         curr_x += 9;
       }
     }
@@ -689,13 +679,13 @@ void stateShowPlayer1Hand () {
   //draw forward to hand_ptr
   for (char i = 0; i < hand_ptr; i++)
   {
-    display_card((i * 16) - 4 + ( 8 * (5 - player_p_hand_size)), 16, player_p_hand[i], 0);
+    display_card((i * 16) + 4 + ( 8 * (5 - player_p_hand_size)), 24, player_p_hand[i], 0);
   }
 
   for (char i = player_p_hand_size - 1; i > (hand_ptr - 1); i--)
   {
-    if (i > hand_ptr) display_card((i * 16) - 4 + ( 8 * (5 - player_p_hand_size)), 16, player_p_hand[i], 0);
-    else display_card((i * 16) - 4 + (8 * (5 - player_p_hand_size)), 8, player_p_hand[i], 0);
+    if (i > hand_ptr) display_card((i * 16) + 4 + ( 8 * (5 - player_p_hand_size)), 24, player_p_hand[i], 0);
+    else display_card((i * 16) + 4 + (8 * (5 - player_p_hand_size)), 16, player_p_hand[i], 0);
   }
 
   if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) hand_ptr++;
@@ -731,13 +721,13 @@ void stateShowPlayer2Hand () {
 
   //draw forward to hand_ptr
   for (char i = 0; i < hand_ptr; i++) {
-    display_card((i * 16) - 4 + ( 8 * (5 - player_p_hand_size)), 16, player_c_hand[i], 0);
+    display_card((i * 16) + 4 + ( 8 * (5 - player_p_hand_size)), 24, player_c_hand[i], 0);
   }
 
   for (char i = player_c_hand_size - 1; i > (hand_ptr - 1); i--)
   {
-    if (i > hand_ptr)display_card((i * 16) - 4 + ( 8 * (5 - player_p_hand_size)), 16, player_c_hand[i], 0);
-    else display_card((i * 16) - 4 + ( 8 * (5 - player_p_hand_size)), 8, player_c_hand[i], 0);
+    if (i > hand_ptr)display_card((i * 16) + 4 + ( 8 * (5 - player_p_hand_size)), 24, player_c_hand[i], 0);
+    else display_card((i * 16) + 4 + ( 8 * (5 - player_p_hand_size)), 16, player_c_hand[i], 0);
   }
   if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_c_hand_size)) hand_ptr++;
   if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
@@ -759,7 +749,7 @@ void stateShowPlayer2Hand () {
 void stateShowComputerCardPlayed() {
   print_progmem(20, 0, text_computer);
   print_progmem(56, 0, text_played);
-  display_card (20, 8, in_play[PLAYER_C], 0);
+  display_card (36, 16, in_play[PLAYER_C], 0);
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     disp_state = GAME_START_PLAYER_1_HAND;
   }
@@ -774,7 +764,7 @@ void stateShow2PlayerCardPlayed() {
   print_number(52, 0, prev_player + 1);
   print_progmem(60, 0, text_played);
 
-  display_card (20, 8, in_play[prev_player], 0);
+  display_card (36, 16, in_play[prev_player], 0);
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     if (curr_player == PLAYER_C) {
       disp_state = GAME_START_PLAYER_2_HAND;
@@ -822,11 +812,11 @@ void stateShowCardsInPlay() {
 
   if (in_play[PLAYER_P] > -1) {
     if (last_winner == PLAYER_P) print_progmem(18, 8, text_win);
-    display_card (-8, 8, in_play[PLAYER_P], player_c_mod);
+    display_card (0, 16, in_play[PLAYER_P], player_c_mod);
   }
   if (in_play[PLAYER_C] > -1) {
     if (last_winner == PLAYER_C) print_progmem(90, 8, text_win);
-    display_card (64, 8, in_play[PLAYER_C], player_p_mod);
+    display_card (72, 16, in_play[PLAYER_C], player_p_mod);
   }
   if (arduboy.justPressed(A_BUTTON | B_BUTTON))
   {
