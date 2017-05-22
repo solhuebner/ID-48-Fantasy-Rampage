@@ -546,9 +546,10 @@ void stateMenuPlay()
 };
 
 void stateGameSelectPlayerMode() {
-  print_progmem(24, 12, text_select_player_mode);
-  print_progmem(32, 24, text_1_player);
-  print_progmem(32, 36, text_2_player);
+  sprites.drawSelfMasked(0, 4, titleName, 0);
+  print_progmem(19, 24, text_select_player_mode);
+  print_progmem(32, 36, text_1_player);
+  print_progmem(32, 48, text_2_player);
 
   if (arduboy.justPressed(UP_BUTTON)) player_mode = PLAYER_MODE_1_PLAYER;
   if (arduboy.justPressed(DOWN_BUTTON)) player_mode = PLAYER_MODE_2_PLAYER;
@@ -556,13 +557,14 @@ void stateGameSelectPlayerMode() {
     startGame();
     gameState = STATE_GAME_PLAYING;
   }
-  print_progmem(26, 24 + (player_mode * 12), text_pointer);
+  print_progmem(26, 36 + (player_mode * 12), text_pointer);
 }
 
 void stateGameSelectGameMode() {
-  print_progmem(24, 12, text_select_game_mode);
-  print_progmem(32, 24, text_basic);
-  print_progmem(32, 36, text_advanced);
+  sprites.drawSelfMasked(0, 4, titleName, 0);
+  print_progmem(24, 24, text_select_game_mode);
+  print_progmem(32, 36, text_basic);
+  print_progmem(32, 48, text_advanced);
 
   if (arduboy.justPressed(UP_BUTTON)) game_mode = GAME_MODE_BASIC;
   if (arduboy.justPressed(DOWN_BUTTON)) game_mode = GAME_MODE_ADVANCED;
@@ -570,7 +572,7 @@ void stateGameSelectGameMode() {
     stateGameSelectPlayerMode();
     gameState = STATE_GAME_SELECT_PLAYER_MODE;
   }
-  print_progmem(26, 24 + (game_mode * 12), text_pointer);
+  print_progmem(26, 36 + (game_mode * 12), text_pointer);
 }
 
 void stateShowStartRound() {
@@ -579,7 +581,8 @@ void stateShowStartRound() {
     print_number(32, 0, PLAYER_P_score);
     print_progmem(64, 0, text_computer);
     print_number(104, 0, PLAYER_C_score);
-  } else {
+  }
+  else {
     print_progmem(0, 0, text_player_1);
     print_number(40, 0, PLAYER_P_score);
     print_progmem(64, 0, text_player_2);
