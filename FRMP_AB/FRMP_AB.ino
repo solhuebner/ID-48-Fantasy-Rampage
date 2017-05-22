@@ -48,5 +48,6 @@ void loop() {
   arduboy.clear();
   ((FunctionPointer) pgm_read_word (&mainGameLoop[gameState]))();
   arduboy.display();
+  if (arduboy.everyXFrames(3)) blinking != blinking;
 }
 

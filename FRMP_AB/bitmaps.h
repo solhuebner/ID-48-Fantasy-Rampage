@@ -749,7 +749,7 @@ const unsigned char PROGMEM player_win_24x24[] =
   0x31, 0x1e, 0x00, 0x00, 0x00, 0x00, 0x80, 0xd0,
 };
 
-const unsigned char PROGMEM map_64x48[] =
+const unsigned char PROGMEM mapView[] =
 {
   // width, height,
   64, 48,
@@ -804,11 +804,13 @@ const unsigned char PROGMEM map_64x48[] =
 };
 
 
-const unsigned char PROGMEM map_marker_4x4[] =
+const unsigned char PROGMEM mapMarker[] =
 {
   // width, height,
-  4, 4,
+  4, 8,
+  // FRAME 00
   0x00, 0x06, 0x06, 0x00,
+  // FRAME 01
   0x00, 0x04, 0x02, 0x00,
 };
 
@@ -822,7 +824,7 @@ const char PROGMEM text_advanced[] = {"Advanced"};                        // 8
 const char PROGMEM text_select_player_mode[] = {"Select Player Mode"};    // 18
 const char PROGMEM text_1_player[] = {"1 Player Mode"};                   // 13
 const char PROGMEM text_2_player[] = {"2 Player Mode"};                   // 13
-const char PROGMEM text_start_round[] = {"Start Round"};                  // 11
+const char PROGMEM text_start_round[] = {"Start Round !"};                // 13
 const char PROGMEM text_element[] = {"Element"};                          // 7
 const char PROGMEM text_your_draw[] = {"The Card You Drew"};              // 17
 const char PROGMEM text_pick_card_to_play[] = {"Pick a Card to Play"};    // 19
@@ -844,8 +846,6 @@ const char PROGMEM text_quit[] = {"Do You Really Want to Quit ?"};        // 28
 const char PROGMEM text_yes_no[] = {"YES   NO"};                          // 8
 const char PROGMEM text_menu[] = {"HELP PLAY INFO CONF"};                 // 20
 const char PROGMEM text_sound[] = {"SOUND  OFF  ON"};                     // 14
-
-
-
+const char PROGMEM text_area[] = {"Area Won by:"};                        // 12
 
 #endif
