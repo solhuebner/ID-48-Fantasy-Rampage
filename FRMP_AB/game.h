@@ -540,6 +540,21 @@ void startGame() {
   startPlayRound();
 }
 
+void showScore()
+{
+  if (player_mode == PLAYER_MODE_1_PLAYER) {
+    print_progmem(0, 0, text_player);
+    print_progmem(73, 0, text_computer);
+  }
+  else {
+    print_progmem(0, 0, text_player_1);
+    print_progmem(73, 0, text_player_2);
+    
+  }
+  print_score(46, 0, PLAYER_P_score);
+  print_score(119, 0, PLAYER_C_score);
+}
+
 //------------------------
 void stateMenuPlay()
 {
@@ -577,18 +592,8 @@ void stateGameSelectGameMode() {
 }
 
 void stateShowStartRound() {
-  if (player_mode == PLAYER_MODE_1_PLAYER) {
-    print_progmem(9, 0, text_player);
-    print_score(45, 0, PLAYER_P_score);
-    print_progmem(68, 0, text_computer);
-    print_score(114, 0, PLAYER_C_score);
-  }
-  else {
-    print_progmem(4, 0, text_player_1);
-    print_score(50, 0, PLAYER_P_score);
-    print_progmem(68, 0, text_player_2);
-    print_score(114, 0, PLAYER_C_score);
-  }
+
+  showScore();
 
   if (game_mode == GAME_MODE_ADVANCED) {
     print_progmem(32, 8, text_start_round);
@@ -646,7 +651,7 @@ void stateShowStartRound() {
 }
 
 void stateShowDrawCard() {
-  print_progmem(30, 0, text_your_draw);
+  print_progmem(22, 0, text_your_draw);
   if (game_mode == GAME_MODE_ADVANCED) {
     display_card (4, 8, drawn[curr_player], 0);
     display_card_info (64, 8, drawn[curr_player]);
@@ -695,7 +700,7 @@ void stateStartPlayer2Hand () {
 }
 
 void stateShowPlayer1Hand () {
-  print_progmem(26, 0, text_pick_card_to_play);
+  print_progmem(17, 0, text_pick_card_to_play);
   //print_number (100, 0, player_p_hand_size);
 
   //draw forward to hand_ptr
@@ -739,7 +744,7 @@ void stateShowPlayer1Hand () {
 
 //only used in 2 player mode
 void stateShowPlayer2Hand () {
-  print_progmem(26, 0, text_pick_card_to_play);
+  print_progmem(17, 0, text_pick_card_to_play);
   //print_number (100, 0, player_c_hand_size);
 
   //draw forward to hand_ptr
@@ -772,8 +777,8 @@ void stateShowPlayer2Hand () {
 }
 
 void stateShowComputerCardPlayed() {
-  print_progmem(20, 0, text_computer);
-  print_progmem(56, 0, text_played);
+  print_progmem(26, 0, text_computer);
+  print_progmem(72, 0, text_played);
   display_card (36, 16, in_play[PLAYER_C], 0);
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
@@ -807,17 +812,8 @@ void stateShowCardsInPlay() {
   char player_p_mod = 0;
   char player_c_mod = 0;
 
-  if (player_mode == PLAYER_MODE_1_PLAYER) {
-    print_progmem(12, 0, text_player);
-    print_number(44, 0, PLAYER_P_score);
-    print_progmem(80, 0, text_computer);
-    print_number(120, 0, PLAYER_C_score);
-  } else {
-    print_progmem(0, 0, text_player_1);
-    print_number(40, 0, PLAYER_P_score);
-    print_progmem(80, 0, text_player_2);
-    print_number(120, 0, PLAYER_C_score);
-  }
+  showScore();
+
   //determine modifiers for advanced play
   if (game_mode == GAME_MODE_ADVANCED) {
     if ((player_p_card.ability > -1) && (player_p_card.suit != player_c_card.suit)) {
@@ -838,11 +834,11 @@ void stateShowCardsInPlay() {
   }
 
   if (in_play[PLAYER_P] > -1) {
-    if (last_winner == PLAYER_P) print_progmem(18, 8, text_win);
+    if (last_winner == PLAYER_P) print_progmem(17, 8, text_win);
     display_card (0, 16, in_play[PLAYER_P], player_c_mod);
   }
   if (in_play[PLAYER_C] > -1) {
-    if (last_winner == PLAYER_C) print_progmem(90, 8, text_win);
+    if (last_winner == PLAYER_C) print_progmem(81, 8, text_win);
     display_card (72, 16, in_play[PLAYER_C], player_p_mod);
   }
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
