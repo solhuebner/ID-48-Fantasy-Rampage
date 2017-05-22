@@ -28,12 +28,12 @@
 #define IMG_MINUS_1    16
 #define IMG_MINUS_2    17
 
-#define IMG_ABILITY_TOXIC   18
-#define IMG_ABILITY_BURN    19
-#define IMG_ABILITY_SWOOP   20
-#define IMG_ABILITY_SPEAR   21
-#define IMG_ABILITY_MAGIC   22
-#define IMG_ABILITY_HUNT    23
+#define IMG_ABILITY_TOXIC   0
+#define IMG_ABILITY_BURN    1
+#define IMG_ABILITY_SWOOP   2
+#define IMG_ABILITY_SPEAR   3
+#define IMG_ABILITY_MAGIC   4
+#define IMG_ABILITY_HUNT    5
 
 #define GAME_START_ROUND               0
 #define GAME_SHOW_START_ROUND          1
@@ -234,7 +234,7 @@ void display_card (char x, char y, char card, char modifier) {
 
   if (game_mode == GAME_MODE_ADVANCED) {
     if (inf.ability > -1) {
-      sprites.drawOverwrite(x + 28, y + 16, cardSprites, inf.ability + IMG_ABILITY_TOXIC);
+      sprites.drawOverwrite(x + 28, y + 16, cardAbility, inf.ability);
       if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
         sprites.drawOverwrite(x + 36, y + 16, cardSprites, IMG_MINUS_2);
       } else {
@@ -251,9 +251,9 @@ void display_card_info(char x, char y, char card) {
   byte i = 0;
   byte j = 0;
   byte k = 0;
-  while (i < 42)
+  while (i < 54)
   {
-    if (j > 6)
+    if (j > 8)
     {
       j = 0;
       k++;
@@ -280,35 +280,26 @@ void display_card_info(char x, char y, char card) {
   if (inf.ability > -1) {
     switch (inf.ability) {
       case ABILITY_TOXIC:
-        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_TOXIC);
         print_progmem(x + 14, y + 27, text_toxic);
         break;
-
       case ABILITY_BURN:
-        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_BURN);
         print_progmem(x + 14, y + 27, text_burn);
         break;
-
       case ABILITY_SWOOP:
-        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_SWOOP);
         print_progmem(x + 14, y + 27, text_swoop);
         break;
-
       case ABILITY_SPEAR:
-        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_SPEAR);
         print_progmem(x + 14, y + 27, text_spear);
         break;
-
       case ABILITY_MAGIC:
-        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_MAGIC);
         print_progmem(x + 14, y + 27, text_magic);
         break;
-
       case ABILITY_HUNT:
-        sprites.drawSelfMasked(x + 46, y + 27, cardSprites, IMG_ABILITY_HUNT);
         print_progmem(x + 14, y + 27, text_hunt);
         break;
     }
+    sprites.drawSelfMasked(x + 46, y + 27, cardAbility, inf.ability);
+    
     if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
       sprites.drawSelfMasked(x + 28, y + 35, cardSprites, IMG_MINUS_2);
     } else {
@@ -653,8 +644,8 @@ void stateShowStartRound() {
 void stateShowDrawCard() {
   print_progmem(22, 0, text_your_draw);
   if (game_mode == GAME_MODE_ADVANCED) {
-    display_card (4, 8, drawn[curr_player], 0);
-    display_card_info (64, 8, drawn[curr_player]);
+    display_card (0, 16, drawn[curr_player], 0);
+    display_card_info (61, 16, drawn[curr_player]);
   } else {
     display_card (36, 16, drawn[curr_player], 0);
   }
