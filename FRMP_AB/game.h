@@ -590,37 +590,37 @@ void stateShowStartRound() {
     print_score(114, 0, PLAYER_C_score);
   }
 
-  print_progmem(32, 8, text_start_round);
-
   if (game_mode == GAME_MODE_ADVANCED) {
+    print_progmem(32, 8, text_start_round);
     sprites.drawOverwrite(0, 16, mapView, 0);
 
     print_progmem(78, 18, text_element);
     sprites.drawOverwrite(92, 26, cardElements, current_suit);
 
-    print_progmem(66, 40, text_area);
+    print_progmem(68, 40, text_area);
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       print_progmem(68, 48, text_player);
-      if (blinking) sprites.drawSelfMasked(114, 48, mapMarker, 0);
+      sprites.drawSelfMasked(118, 48, mapMarker, blinking);
       print_progmem(68, 56, text_computer);
-      if (blinking) sprites.drawSelfMasked(114, 48, mapMarker, 1);
+      sprites.drawSelfMasked(118, 56, mapMarker, 2 + blinking);
     }
     else {
       print_progmem(68, 48, text_player_1);
-      if (blinking) sprites.drawSelfMasked(114, 48, mapMarker, 0);
-      print_progmem(68, 46, text_player_2);
-      if (blinking) sprites.drawSelfMasked(114, 48, mapMarker, 1);
+      sprites.drawSelfMasked(118, 48, mapMarker, blinking);
+      print_progmem(68, 56, text_player_2);
+      sprites.drawSelfMasked(118, 56, mapMarker, 2 + blinking);
     }
 
 
     for (char i = 0; i < MAX_ROUNDS; i++) {
       if (round_winner[i] > -1) {
         MapInfo curr = get_map_info(i);
-        if (blinking) sprites.drawSelfMasked(curr.x + 0, curr.y + 16, mapMarker, round_winner[i]);
+        sprites.drawSelfMasked(curr.x + 0, curr.y + 16, mapMarker, (2 * round_winner[i]) + blinking);
       }
     }
 
   }
+  else print_progmem(32, 29, text_start_round);
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
     //if 1 player mode, then go on to draw
@@ -903,10 +903,11 @@ void stateShowWinner() {
 }
 
 void stateShowReallyQuit() {
-  print_progmem(8, 16, text_quit);
-  print_progmem(43, 28, text_yes_no);
-  sprites.drawSelfMasked((41 + (!quitYesNo * 23)), 26, selectorTop, 0);
-  sprites.drawPlusMask((40 + (!quitYesNo * 23)), 34, selectorMid_plus_mask, 0);
+  print_progmem(32, 8, text_really);
+  print_progmem(29, 16, text_quit);
+  print_progmem(44, 28, text_yes_no);
+  sprites.drawSelfMasked((40 + (!quitYesNo * 26)), 26, selectorTop, 0);
+  sprites.drawPlusMask((39 + (!quitYesNo * 26)), 34, selectorMid_plus_mask, 0);
 
   if (arduboy.pressed(LEFT_BUTTON)) quitYesNo = true;
   else if (arduboy.pressed(RIGHT_BUTTON)) quitYesNo = false;

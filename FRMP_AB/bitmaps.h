@@ -811,7 +811,11 @@ const unsigned char PROGMEM mapMarker[] =
   // FRAME 00
   0x00, 0x06, 0x06, 0x00,
   // FRAME 01
-  0x00, 0x04, 0x02, 0x00,
+  0x0f, 0x09, 0x09, 0x0f,
+  // FRAME 02
+  0x0f, 0x08, 0x0a, 0x08,
+  // FRAME 03
+  0x01, 0x05, 0x01, 0x0f,
 };
 
 
@@ -842,10 +846,11 @@ const char PROGMEM text_swoop[] = {"Swoop"};                              // 5
 const char PROGMEM text_spear[] = {"Spear"};                              // 5
 const char PROGMEM text_magic[] = {"Magic"};                              // 5
 const char PROGMEM text_hunt[] = {"Hunt"};                                // 4
-const char PROGMEM text_quit[] = {"Do You Really Want to Quit ?"};        // 28
+const char PROGMEM text_really[] = {"Do You Really"};                     // 13
+const char PROGMEM text_quit[] = {"Want to Quit ?"};                      // 14
 const char PROGMEM text_yes_no[] = {"YES   NO"};                          // 8
 const char PROGMEM text_menu[] = {"HELP PLAY INFO CONF"};                 // 20
 const char PROGMEM text_sound[] = {"SOUND  OFF  ON"};                     // 14
-const char PROGMEM text_area[] = {"Area Won by:"};                        // 12
+const char PROGMEM text_area[] = {"Area Won by"};                         // 11
 
 #endif
