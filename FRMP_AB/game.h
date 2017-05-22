@@ -851,21 +851,11 @@ void stateShowCardsInPlay() {
 }
 
 void stateShowWinner() {
-  if (player_mode == PLAYER_MODE_1_PLAYER) {
-    print_progmem(0, 0, text_player);
-    print_number(32, 0, PLAYER_P_score);
-    print_progmem(64, 0, text_computer);
-    print_number(104, 0, PLAYER_C_score);
-  } else {
-    print_progmem(0, 0, text_player_1);
-    print_number(40, 0, PLAYER_P_score);
-    print_progmem(64, 0, text_player_2);
-    print_number(104, 0, PLAYER_C_score);
-  }
+  showScore();
 
   if (PLAYER_P_score > PLAYER_C_score) {
     //player wins
-    print_progmem(44, 16, text_win);
+    print_progmem(49, 16, text_win);
     sprites.drawSelfMasked(44, 24, player_win_24x24, 0);
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       print_progmem(44, 56, text_player);
@@ -873,21 +863,22 @@ void stateShowWinner() {
       print_progmem(44, 56, text_player_1);
     }
 
-  } else {
+  }
+  else {
     if (PLAYER_C_score > PLAYER_P_score) {
       //computer wins
-      print_progmem(44, 16, text_win);
+      print_progmem(49, 16, text_win);
       sprites.drawSelfMasked(44, 24, computer_win_24x24, 0);
-
       if (player_mode == PLAYER_MODE_1_PLAYER) {
         print_progmem(44, 56, text_computer);
       } else {
         print_progmem(44, 56, text_player_2);
       }
 
-    } else {
+    }
+    else {
       //tie
-      print_progmem(44, 16, text_tie);
+      print_progmem(52, 16, text_tie);
     }
   }
 
