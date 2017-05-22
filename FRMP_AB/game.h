@@ -578,15 +578,15 @@ void stateGameSelectGameMode() {
 void stateShowStartRound() {
   if (player_mode == PLAYER_MODE_1_PLAYER) {
     print_progmem(0, 0, text_player);
-    print_number(32, 0, PLAYER_P_score);
+    print_score(32, 0, PLAYER_P_score);
     print_progmem(64, 0, text_computer);
-    print_number(104, 0, PLAYER_C_score);
+    print_score(104, 0, PLAYER_C_score);
   }
   else {
     print_progmem(0, 0, text_player_1);
-    print_number(40, 0, PLAYER_P_score);
+    print_score(40, 0, PLAYER_P_score);
     print_progmem(64, 0, text_player_2);
-    print_number(104, 0, PLAYER_C_score);
+    print_score(104, 0, PLAYER_C_score);
   }
 
   print_progmem(0, 8, text_start_round);
