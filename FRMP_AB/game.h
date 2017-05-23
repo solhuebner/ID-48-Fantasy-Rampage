@@ -21,7 +21,7 @@
 #define PLAYER_MODE_2_PLAYER 1 //2 Player (Human/Human)
 
 #define IMG_BONUS      14
-#define IMG_WAIT       15
+#define IMG_WAIT       1
 #define IMG_BLANK      0
 #define IMG_ABILITY    15
 
@@ -459,7 +459,7 @@ void stateShowPlayerWait() {
   print_number(80, 12, curr_player + 1);
 
   for (char i = 0; i < wait_loop; i++) {
-    sprites.drawSelfMasked(16 * i + 36, 44, cardSprites, IMG_WAIT);
+    sprites.drawSelfMasked(16 * i + 36, 44, cardBonus, IMG_WAIT);
   }
 
   if (wait_loop <= 3) {
@@ -846,30 +846,32 @@ void stateShowWinner() {
 
   if (PLAYER_P_score > PLAYER_C_score) {
     //player wins
-    print_progmem(49, 16, text_win);
-    sprites.drawSelfMasked(44, 24, player_win_24x24, 0);
+    print_progmem(49, 56, text_win);
+    sprites.drawSelfMasked(52, 26, winningBadge, 0);
     if (player_mode == PLAYER_MODE_1_PLAYER) {
-      print_progmem(44, 56, text_player);
+      print_progmem(49, 16, text_player);
     } else {
-      print_progmem(44, 56, text_player_1);
+      print_progmem(44, 16, text_player_1);
     }
 
   }
   else {
     if (PLAYER_C_score > PLAYER_P_score) {
       //computer wins
-      print_progmem(49, 16, text_win);
-      sprites.drawSelfMasked(44, 24, computer_win_24x24, 0);
+      print_progmem(49, 56, text_win);
+      sprites.drawSelfMasked(52, 26, winningBadge, 1);
       if (player_mode == PLAYER_MODE_1_PLAYER) {
-        print_progmem(44, 56, text_computer);
+        print_progmem(44, 16, text_computer);
       } else {
-        print_progmem(44, 56, text_player_2);
+        print_progmem(44, 16, text_player_2);
       }
 
     }
     else {
       //tie
       print_progmem(52, 16, text_tie);
+      sprites.drawSelfMasked(26, 26, winningBadge, 0);
+      sprites.drawSelfMasked(78, 26, winningBadge, 1);
     }
   }
 
