@@ -5,51 +5,41 @@
 #include "globals.h"
 #include "card_info.h"
 
-#define DECK_SIZE 48
+#define DECK_SIZE                       48
 
-#define HAND_SIZE  5
-#define IN_PLAY_SIZE 2
-#define MAX_ROUNDS 24
+#define HAND_SIZE                       5
+#define IN_PLAY_SIZE                    2
+#define MAX_ROUNDS                      24
 
-#define PLAYER_P 0  //Player 1, or Player (Human)
-#define PLAYER_C 1  //Player 2, or Computer
+#define PLAYER_P                        0  //Player 1, or Player (Human)
+#define PLAYER_C                        1  //Player 2, or Computer
 
-#define GAME_MODE_BASIC 0
-#define GAME_MODE_ADVANCED 1
+#define GAME_MODE_BASIC                 0
+#define GAME_MODE_ADVANCED              1
 
-#define PLAYER_MODE_1_PLAYER 0 //1 Player (Human/Computer)
-#define PLAYER_MODE_2_PLAYER 1 //2 Player (Human/Human)
+#define PLAYER_MODE_1_PLAYER            0 //1 Player (Human/Computer)
+#define PLAYER_MODE_2_PLAYER            1 //2 Player (Human/Human)
 
-#define IMG_BONUS      14
-#define IMG_WAIT       1
-#define IMG_BLANK      0
-#define IMG_ABILITY    15
+#define IMG_BONUS                       0
+#define IMG_WAIT                        1
+#define IMG_MINUS_1                     2
+#define IMG_MINUS_2                     3
 
-#define IMG_MINUS_1    16
-#define IMG_MINUS_2    17
-
-#define IMG_ABILITY_TOXIC   0
-#define IMG_ABILITY_BURN    1
-#define IMG_ABILITY_SWOOP   2
-#define IMG_ABILITY_SPEAR   3
-#define IMG_ABILITY_MAGIC   4
-#define IMG_ABILITY_HUNT    5
-
-#define GAME_START_ROUND               0
-#define GAME_SHOW_START_ROUND          1
-#define GAME_SHOW_DRAW_CARD            2
-#define GAME_SHOW_PLAYER_1_HAND        3
-#define GAME_SHOW_PLAYER_2_HAND        4
-#define GAME_START_PLAYER_1_HAND       5
-#define GAME_START_PLAYER_2_HAND       6
-#define GAME_COMPUTER_PLAY_HAND        7
-#define GAME_SHOW_COMPUTER_CARD_PLAYED 8
-#define GAME_SHOW_2_PLAYER_CARD_PLAYED 9
-#define GAME_DETERMINE_ROUND_WINNER    10
-#define GAME_SHOW_CARDS_IN_PLAY        11
-#define GAME_SHOW_WINNER               12
-#define GAME_SHOW_PLAYER_WAIT          13
-#define GAME_SHOW_REALLY_QUIT          14
+#define GAME_START_ROUND                0
+#define GAME_SHOW_START_ROUND           1
+#define GAME_SHOW_DRAW_CARD             2
+#define GAME_SHOW_PLAYER_1_HAND         3
+#define GAME_SHOW_PLAYER_2_HAND         4
+#define GAME_START_PLAYER_1_HAND        5
+#define GAME_START_PLAYER_2_HAND        6
+#define GAME_COMPUTER_PLAY_HAND         7
+#define GAME_SHOW_COMPUTER_CARD_PLAYED  8
+#define GAME_SHOW_2_PLAYER_CARD_PLAYED  9
+#define GAME_DETERMINE_ROUND_WINNER     10
+#define GAME_SHOW_CARDS_IN_PLAY         11
+#define GAME_SHOW_WINNER                12
+#define GAME_SHOW_PLAYER_WAIT           13
+#define GAME_SHOW_REALLY_QUIT           14
 
 char deck[DECK_SIZE];
 char player_p_hand[HAND_SIZE];
@@ -194,25 +184,18 @@ void display_card (char x, char y, char card, char modifier) {
         break;
 
       case 1:
-        sprites.drawOverwrite(x + 56, y, cardSprites, IMG_BONUS);
+        sprites.drawOverwrite(x + 49, y - 7, cardBonus, IMG_BONUS);
         break;
 
       case -1:
-        sprites.drawOverwrite(x + 56, y, cardSprites, IMG_MINUS_1);
+        sprites.drawOverwrite(x + 49, y - 7, cardBonus, IMG_MINUS_1);
         break;
 
       case -2:
-        sprites.drawOverwrite(x + 56, y, cardSprites, IMG_MINUS_2);
+        sprites.drawOverwrite(x + 49, y - 7, cardBonus, IMG_MINUS_2);
         break;
     }
   }
-  /*
-     IMG_BONUS   14
-     IMG_
-     IMG_MINUS_1 16
-     IMG_MINUS_2 17
-
-  */
 
   byte i = 0;
   byte j = 0;
@@ -234,11 +217,11 @@ void display_card (char x, char y, char card, char modifier) {
 
   if (game_mode == GAME_MODE_ADVANCED) {
     if (inf.ability > -1) {
-      sprites.drawOverwrite(x + 28, y + 16, cardAbility, inf.ability);
+      sprites.drawOverwrite(x + 20, y + 7, cardAbility, inf.ability);
       if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
-        sprites.drawOverwrite(x + 36, y + 16, cardSprites, IMG_MINUS_2);
+        sprites.drawOverwrite(x + 29, y + 8, cardBonus, IMG_MINUS_2);
       } else {
-        sprites.drawOverwrite(x + 36, y + 16, cardSprites, IMG_MINUS_1);
+        sprites.drawOverwrite(x + 29, y + 8, cardBonus, IMG_MINUS_1);
       }
     }
   }
@@ -263,16 +246,16 @@ void display_card_info(char x, char y, char card) {
     i++;
   }
 
-  print_progmem(x + 14, y + 12, text_element);
-  sprites.drawOverwrite(x + 46, y + 12, cardSprites, inf.suit + 10);
+  print_progmem(x + 10, y + 5, text_element);
+  sprites.drawOverwrite(x + 47, y + 3, cardElements, inf.suit);
+  print_progmem(x + 10, y + 13, text_power);
+  print_number(x + 48, y + 13, inf.power);
 
-
-  print_progmem(x + 14, y + 20, text_power);
-  print_number(x + 42, y + 20, inf.power);
 
   //draw bonus, if it is active on the card
+
   if (inf.suit == current_suit) {
-    sprites.drawSelfMasked(x + 46, y + 19, cardSprites, IMG_BONUS);
+    sprites.drawSelfMasked(x + 55, y + 13, cardBonus, IMG_BONUS);
   }
 
   //if the card has an ability, draw the appropriate ability info
@@ -280,44 +263,41 @@ void display_card_info(char x, char y, char card) {
   if (inf.ability > -1) {
     switch (inf.ability) {
       case ABILITY_TOXIC:
-        print_progmem(x + 14, y + 27, text_toxic);
+        print_progmem(x + 10, y + 21, text_toxic);
         break;
       case ABILITY_BURN:
-        print_progmem(x + 14, y + 27, text_burn);
+        print_progmem(x + 10, y + 21, text_burn);
         break;
       case ABILITY_SWOOP:
-        print_progmem(x + 14, y + 27, text_swoop);
+        print_progmem(x + 10, y + 21, text_swoop);
         break;
       case ABILITY_SPEAR:
-        print_progmem(x + 14, y + 27, text_spear);
+        print_progmem(x + 10, y + 21, text_spear);
         break;
       case ABILITY_MAGIC:
-        print_progmem(x + 14, y + 27, text_magic);
+        print_progmem(x + 10, y + 21, text_magic);
         break;
       case ABILITY_HUNT:
-        print_progmem(x + 14, y + 27, text_hunt);
+        print_progmem(x + 10, y + 21, text_hunt);
         break;
     }
-    sprites.drawSelfMasked(x + 46, y + 27, cardAbility, inf.ability);
-    
+    sprites.drawSelfMasked(x + 47, y + 20, cardAbility, inf.ability);
+
     if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
-      sprites.drawSelfMasked(x + 28, y + 35, cardSprites, IMG_MINUS_2);
+      sprites.drawSelfMasked(x + 28, y + 35, cardBonus, IMG_MINUS_2);
     } else {
-      sprites.drawSelfMasked(x + 28, y + 35, cardSprites, IMG_MINUS_1);
+      sprites.drawSelfMasked(x + 28, y + 35, cardBonus, IMG_MINUS_1);
     }
 
     //draw elements with vulnurabilty to the ability
     char curr_x = x + 22;
     for (char j = 0; j < 4; j++) {
       if (j != inf.suit) {
-        sprites.drawSelfMasked(x + 22, y + 43, cardSprites, j + 10);
+        sprites.drawSelfMasked(x + 22, y + 35, cardSprites, j + 10);
         curr_x += 9;
       }
     }
-
   }
-
-
 }
 
 void startPlayRound() {
@@ -541,7 +521,7 @@ void showScore()
   else {
     print_progmem(0, 0, text_player_1);
     print_progmem(73, 0, text_player_2);
-    
+
   }
   print_score(46, 0, PLAYER_P_score);
   print_score(119, 0, PLAYER_C_score);
