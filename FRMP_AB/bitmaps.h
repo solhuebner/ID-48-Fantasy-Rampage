@@ -837,7 +837,7 @@ const unsigned char PROGMEM mapMarker[] =
 
 const char PROGMEM text_info[] = {"2017 TRODOSS - JO3RI"};                // 20
 const char PROGMEM text_pointer[] = {">"};                                // 1
-const char PROGMEM text_play[] = {"Play"};                                // 4
+const char PROGMEM text_play[] = {"Press Button to Play"};                // 20
 const char PROGMEM text_select_game_mode[] = {"Select Game Mode"};        // 16
 const char PROGMEM text_basic[] = {"Basic"};                              // 5
 const char PROGMEM text_advanced[] = {"Advanced"};                        // 8
@@ -852,7 +852,7 @@ const char PROGMEM text_player[] = {"Player"};                            // 6
 const char PROGMEM text_computer[] = {"Computer"};                        // 8
 const char PROGMEM text_player_1[] = {"Player 1"};                        // 8
 const char PROGMEM text_player_2[] = {"Player 2"};                        // 8
-const char PROGMEM text_played[] = {"Played"};                            // 5
+const char PROGMEM text_played[] = {"Played"};                            // 6
 const char PROGMEM text_win[] = {"WINS !"};                               // 6
 const char PROGMEM text_tie[] = {"TIE !"};                                // 5
 const char PROGMEM text_power[] = {"Power"};                              // 5
@@ -868,5 +868,7 @@ const char PROGMEM text_yes_no[] = {"YES   NO"};                          // 8
 const char PROGMEM text_menu[] = {"HELP PLAY INFO CONF"};                 // 20
 const char PROGMEM text_sound[] = {"SOUND  OFF  ON"};                     // 14
 const char PROGMEM text_area[] = {"Area Won by"};                         // 11
+const char PROGMEM text_pass[] = {"Pass the Arduboy on to"};              // 22
+
 
 #endif

@@ -455,8 +455,9 @@ void determine_round_winner() {
 }
 
 void stateShowPlayerWait() {
-  print_progmem(48, 12, text_player);
-  print_number(80, 12, curr_player + 1);
+  print_progmem(9, 4, text_pass);
+  print_progmem(44, 18, text_player);
+  print_number(79, 18, curr_player + 1);
 
   for (char i = 0; i < wait_loop; i++) {
     sprites.drawSelfMasked(16 * i + 36, 44, cardBonus, IMG_WAIT);
@@ -464,14 +465,14 @@ void stateShowPlayerWait() {
 
   if (wait_loop <= 3) {
     wait_ctr++;
-    if (wait_ctr > 30) {
+    if (wait_ctr > 15) {
       wait_ctr = 0;
       wait_loop++;
     }
 
   } else {
 
-    print_progmem(52, 32, text_play);
+    print_progmem(14, 32, text_play);
 
     if (arduboy.justPressed(A_BUTTON | B_BUTTON))
     {
@@ -782,9 +783,9 @@ void stateShow2PlayerCardPlayed() {
   char prev_player = PLAYER_C;
   if (curr_player == PLAYER_C) prev_player = PLAYER_P;
 
-  print_progmem(20, 0, text_player);
-  print_number(52, 0, prev_player + 1);
-  print_progmem(60, 0, text_played);
+  print_progmem(26, 0, text_player);
+  print_number(61, 0, prev_player + 1);
+  print_progmem(72, 0, text_played);
 
   display_card (36, 16, in_play[prev_player], 0);
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
