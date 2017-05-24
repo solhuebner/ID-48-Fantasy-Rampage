@@ -806,12 +806,12 @@ void stateShowCardsInPlay() {
   }
 
   if (in_play[PLAYER_P] > -1) {
-    if (last_winner == PLAYER_P) print_progmem(17, 8, text_win);
-    display_card (0, 16, in_play[PLAYER_P], player_c_mod);
+    if (last_winner == PLAYER_P) print_progmem(17, 8, text_win);    // 17 = (64 - 30)/2
+    display_card (0, 16, in_play[PLAYER_P], player_c_mod); 
   }
   if (in_play[PLAYER_C] > -1) {
-    if (last_winner == PLAYER_C) print_progmem(81, 8, text_win);
-    display_card (72, 16, in_play[PLAYER_C], player_p_mod);
+    if (last_winner == PLAYER_C) print_progmem(89, 8, text_win);    // 89 = 72 + (64-30)/2
+    display_card (72, 16, in_play[PLAYER_C], player_p_mod);         
   }
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
   if (arduboy.justPressed(A_BUTTON | B_BUTTON))
@@ -827,7 +827,7 @@ void stateShowWinner() {
 
   if (PLAYER_P_score > PLAYER_C_score) {
     //player wins
-    print_progmem(49, 56, text_win);
+    print_progmem(51, 56, text_win);
     sprites.drawSelfMasked(52, 26, winningBadge, 0);
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       print_progmem(49, 16, text_player);
@@ -839,7 +839,7 @@ void stateShowWinner() {
   else {
     if (PLAYER_C_score > PLAYER_P_score) {
       //computer wins
-      print_progmem(49, 56, text_win);
+      print_progmem(51, 56, text_win);
       sprites.drawSelfMasked(52, 26, winningBadge, 1);
       if (player_mode == PLAYER_MODE_1_PLAYER) {
         print_progmem(44, 16, text_computer);
@@ -850,7 +850,7 @@ void stateShowWinner() {
     }
     else {
       //tie
-      print_progmem(52, 16, text_tie);
+      print_progmem(54, 16, text_tie);
       sprites.drawSelfMasked(26, 26, winningBadge, 0);
       sprites.drawSelfMasked(78, 26, winningBadge, 1);
     }
