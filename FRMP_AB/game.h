@@ -197,19 +197,17 @@ void display_card (char x, char y, char card, char modifier) {
     }
   }
 
-  byte i = 0;
   byte j = 0;
   byte k = 0;
-  while (i < 42)
+  while ((j + (k*7)) < 42)
   {
     if (j > 6)
     {
       j = 0;
       k++;
     }
-    sprites.drawPlusMask(x + (8 * j), y + (8 * k), cardBorders_plus_mask, pgm_read_byte(&cardShape[i]));
+    sprites.drawPlusMask(x + (8 * j), y + (8 * k), cardBorders_plus_mask, pgm_read_byte(&cardShape[j + (k*7)]));
     j++;
-    i++;
   }
   sprites.drawOverwrite(x + 4, y + 4, cardPower, inf.power - 4);
   sprites.drawOverwrite(x + 44, y + 4, cardElements, inf.suit);
