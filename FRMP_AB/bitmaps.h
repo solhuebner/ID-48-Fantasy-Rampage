@@ -807,10 +807,10 @@ const char PROGMEM text_quit[] = {"Want to Quit ?"};                      // 14
 const char PROGMEM text_yes_no[] = {"YES   NO"};                          // 8
 const char PROGMEM text_menu[] = {"HELP PLAY INFO CONF"};                 // 20
 const char PROGMEM text_sound[] = {"SOUND  OFF  ON"};                     // 14
-const char PROGMEM text_area[] = {"Area Won by"};                         // 11
+const char PROGMEM text_area[] = {"Areas Won by"};                        // 12
 const char PROGMEM text_pass[] = {"Pass the Arduboy on to"};              // 22
 const char PROGMEM text_card[] = {"Attacks"};                             // 7
-const char PROGMEM text_boost[] = {"Boost"};                               // 5
+const char PROGMEM text_boost[] = {"Booster"};                            // 7
 
 
 #endif

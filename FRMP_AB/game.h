@@ -572,15 +572,15 @@ void stateShowStartRound() {
     sprites.drawOverwrite(0, 16, mapView, 0);
 
     print_progmem(68, 18, text_boost);
-    print_progmem(98, 18, text_element);
-    sprites.drawOverwrite(92, 26, cardElements, current_suit);
+    print_progmem(68, 26, text_element);
+    sprites.drawOverwrite(120, 21, cardElements, current_suit);
 
     print_progmem(68, 40, text_area);
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       print_progmem(68, 48, text_player);
-      sprites.drawSelfMasked(118, 48, mapMarker, blinking);
+      sprites.drawSelfMasked(123, 48, mapMarker, blinking);
       print_progmem(68, 56, text_computer);
-      sprites.drawSelfMasked(118, 56, mapMarker, 2 + blinking);
+      sprites.drawSelfMasked(123, 56, mapMarker, 2 + blinking);
     }
     else {
       print_progmem(68, 48, text_player_1);
