@@ -229,19 +229,17 @@ void display_card (char x, char y, char card, char modifier) {
 void display_card_info(char x, char y, char card) {
   CardInfo inf = get_card_info(card);
 
-  byte i = 0;
   byte j = 0;
   byte k = 0;
-  while (i < 54)
+  while ((j+(k*9)) < 54)
   {
     if (j > 8)
     {
       j = 0;
       k++;
     }
-    sprites.drawOverwrite(x + (8 * j), y + (8 * k), cardInfo, pgm_read_byte(&cardInfoShape[i]));
+    sprites.drawOverwrite(x + (8 * j), y + (8 * k), cardInfo, pgm_read_byte(&cardInfoShape[j+(k*9)]));
     j++;
-    i++;
   }
 
   print_progmem(x + 10, y + 5, text_element);
