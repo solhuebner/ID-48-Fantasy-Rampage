@@ -243,15 +243,17 @@ void display_card_info(char x, char y, char card) {
   }
 
   print_progmem(x + 10, y + 5, text_element);
-  sprites.drawOverwrite(x + 47, y + 3, cardElements, inf.suit);
+  sprites.drawOverwrite(x + 54, y + 3, cardElements, inf.suit);
   print_progmem(x + 10, y + 13, text_power);
-  print_number(x + 48, y + 13, inf.power);
-
 
   //draw bonus, if it is active on the card
 
   if (inf.suit == current_suit) {
+    print_number(x + 48, y + 13, inf.power);
     sprites.drawSelfMasked(x + 55, y + 13, cardBonus, IMG_BONUS);
+  }
+  else {
+    print_number(x + 56, y + 13, inf.power);
   }
 
   //if the card has an ability, draw the appropriate ability info
@@ -259,38 +261,40 @@ void display_card_info(char x, char y, char card) {
   if (inf.ability > -1) {
     switch (inf.ability) {
       case ABILITY_TOXIC:
-        print_progmem(x + 10, y + 21, text_toxic);
+        print_progmem(x + 14, y + 21, text_toxic);
         break;
       case ABILITY_BURN:
-        print_progmem(x + 10, y + 21, text_burn);
+        print_progmem(x + 14, y + 21, text_burn);
         break;
       case ABILITY_SWOOP:
-        print_progmem(x + 10, y + 21, text_swoop);
+        print_progmem(x + 14, y + 21, text_swoop);
         break;
       case ABILITY_SPEAR:
-        print_progmem(x + 10, y + 21, text_spear);
+        print_progmem(x + 14, y + 21, text_spear);
         break;
       case ABILITY_MAGIC:
-        print_progmem(x + 10, y + 21, text_magic);
+        print_progmem(x + 14, y + 21, text_magic);
         break;
       case ABILITY_HUNT:
-        print_progmem(x + 10, y + 21, text_hunt);
+        print_progmem(x + 14, y + 21, text_hunt);
         break;
     }
-    sprites.drawSelfMasked(x + 47, y + 20, cardAbility, inf.ability);
-
+    sprites.drawSelfMasked(x + 43, y + 20, cardAbility, inf.ability);
+    
     if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
-      sprites.drawSelfMasked(x + 28, y + 35, cardBonus, IMG_MINUS_2);
+      sprites.drawSelfMasked(x + 52, y + 21, cardBonus, IMG_MINUS_2);
     } else {
-      sprites.drawSelfMasked(x + 28, y + 35, cardBonus, IMG_MINUS_1);
+      sprites.drawSelfMasked(x + 52, y + 21, cardBonus, IMG_MINUS_1);
     }
-
+    
+    
     //draw elements with vulnurabilty to the ability
-    char curr_x = x + 22;
-    for (char j = 0; j < 4; j++) {
+    print_progmem(x + 19, y + 29, text_card);
+    byte k = 0;
+    for (char j = 0; j < 4; j++) { 
       if (j != inf.suit) {
-        sprites.drawSelfMasked(x + 22, y + 35, cardSprites, j + 10);
-        curr_x += 9;
+        sprites.drawSelfMasked(x + 20 + (12*k), y + 36, cardElements, j);
+        k++;
       }
     }
   }
@@ -567,7 +571,8 @@ void stateShowStartRound() {
     print_progmem(32, 8, text_start_round);
     sprites.drawOverwrite(0, 16, mapView, 0);
 
-    print_progmem(78, 18, text_element);
+    print_progmem(68, 18, text_boost);
+    print_progmem(98, 18, text_element);
     sprites.drawOverwrite(92, 26, cardElements, current_suit);
 
     print_progmem(68, 40, text_area);
