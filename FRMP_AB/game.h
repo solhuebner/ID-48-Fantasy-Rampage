@@ -199,14 +199,14 @@ void display_card (char x, char y, char card, char modifier) {
 
   byte j = 0;
   byte k = 0;
-  while ((j + (k*7)) < 42)
+  while ((j + (k * 7)) < 42)
   {
     if (j > 6)
     {
       j = 0;
       k++;
     }
-    sprites.drawPlusMask(x + (8 * j), y + (8 * k), cardBorders_plus_mask, pgm_read_byte(&cardShape[j + (k*7)]));
+    sprites.drawPlusMask(x + (8 * j), y + (8 * k), cardBorders_plus_mask, pgm_read_byte(&cardShape[j + (k * 7)]));
     j++;
   }
   sprites.drawOverwrite(x + 4, y + 4, cardPower, inf.power - 4);
@@ -231,14 +231,14 @@ void display_card_info(char x, char y, char card) {
 
   byte j = 0;
   byte k = 0;
-  while ((j+(k*9)) < 54)
+  while ((j + (k * 9)) < 54)
   {
     if (j > 8)
     {
       j = 0;
       k++;
     }
-    sprites.drawOverwrite(x + (8 * j), y + (8 * k), cardInfo, pgm_read_byte(&cardInfoShape[j+(k*9)]));
+    sprites.drawOverwrite(x + (8 * j), y + (8 * k), cardInfo, pgm_read_byte(&cardInfoShape[j + (k * 9)]));
     j++;
   }
 
@@ -280,20 +280,20 @@ void display_card_info(char x, char y, char card) {
         break;
     }
     sprites.drawSelfMasked(x + 43, y + 20, cardAbility, inf.ability);
-    
+
     if ((inf.ability == ABILITY_MAGIC) || (inf.ability == ABILITY_HUNT)) {
       sprites.drawSelfMasked(x + 52, y + 21, cardBonus, IMG_MINUS_2);
     } else {
       sprites.drawSelfMasked(x + 52, y + 21, cardBonus, IMG_MINUS_1);
     }
-    
-    
+
+
     //draw elements with vulnurabilty to the ability
     print_progmem(x + 19, y + 29, text_card);
     byte k = 0;
-    for (char j = 0; j < 4; j++) { 
+    for (char j = 0; j < 4; j++) {
       if (j != inf.suit) {
-        sprites.drawSelfMasked(x + 20 + (12*k), y + 36, cardElements, j);
+        sprites.drawSelfMasked(x + 20 + (12 * k), y + 36, cardElements, j);
         k++;
       }
     }
@@ -316,6 +316,7 @@ void startPlayRound() {
     disp_state = GAME_SHOW_START_ROUND;
   } else {
     disp_state = GAME_SHOW_WINNER;
+    songPlayed = false;
   }
 }
 
@@ -531,6 +532,7 @@ void showScore()
 void stateMenuPlay()
 {
   gameState = STATE_GAME_SELECT_GAME_MODE;
+  ATM.stop();
 };
 
 void stateGameSelectPlayerMode() {
@@ -808,11 +810,11 @@ void stateShowCardsInPlay() {
 
   if (in_play[PLAYER_P] > -1) {
     if (last_winner == PLAYER_P) print_progmem(17, 8, text_win);    // 17 = (64 - 30)/2
-    display_card (0, 16, in_play[PLAYER_P], player_c_mod); 
+    display_card (0, 16, in_play[PLAYER_P], player_c_mod);
   }
   if (in_play[PLAYER_C] > -1) {
     if (last_winner == PLAYER_C) print_progmem(89, 8, text_win);    // 89 = 72 + (64-30)/2
-    display_card (72, 16, in_play[PLAYER_C], player_p_mod);         
+    display_card (72, 16, in_play[PLAYER_C], player_p_mod);
   }
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
   if (arduboy.justPressed(A_BUTTON | B_BUTTON))
@@ -828,6 +830,11 @@ void stateShowWinner() {
 
   if (PLAYER_P_score > PLAYER_C_score) {
     //player wins
+    if (!songPlayed)
+    {
+      ATM.play(victory);
+      songPlayed = true;
+    }
     print_progmem(51, 56, text_win);
     sprites.drawSelfMasked(52, 26, winningBadge, 0);
     if (player_mode == PLAYER_MODE_1_PLAYER) {
@@ -843,9 +850,19 @@ void stateShowWinner() {
       print_progmem(51, 56, text_win);
       sprites.drawSelfMasked(52, 26, winningBadge, 1);
       if (player_mode == PLAYER_MODE_1_PLAYER) {
+        if (!songPlayed)
+        {
+          ATM.play(lost);
+          songPlayed = true;
+        }
         print_progmem(44, 16, text_computer);
       } else {
         print_progmem(44, 16, text_player_2);
+        if (!songPlayed)
+        {
+          ATM.play(victory);
+          songPlayed = true;
+        }
       }
 
     }

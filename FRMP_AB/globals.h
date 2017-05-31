@@ -32,5 +32,6 @@ byte menuSelection = STATE_MENU_PLAY; // PLAY menu item is pre-selected
 byte globalCounter = 0;
 
 boolean blinking = true;
+boolean songPlayed = false;
 
 #endif
