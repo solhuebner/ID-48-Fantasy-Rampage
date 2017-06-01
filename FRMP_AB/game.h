@@ -832,7 +832,7 @@ void stateShowWinner() {
     //player wins
     if (!songPlayed)
     {
-      ATM.play(victory);
+      ATM.play(victorySong);
       songPlayed = true;
     }
     print_progmem(51, 56, text_win);
@@ -852,7 +852,7 @@ void stateShowWinner() {
       if (player_mode == PLAYER_MODE_1_PLAYER) {
         if (!songPlayed)
         {
-          ATM.play(lost);
+          ATM.play(lostSong);
           songPlayed = true;
         }
         print_progmem(44, 16, text_computer);
@@ -860,7 +860,7 @@ void stateShowWinner() {
         print_progmem(44, 16, text_player_2);
         if (!songPlayed)
         {
-          ATM.play(victory);
+          ATM.play(victorySong);
           songPlayed = true;
         }
       }
@@ -877,7 +877,7 @@ void stateShowWinner() {
   if (arduboy.justPressed(A_BUTTON | B_BUTTON))
   {
     gameState = STATE_MENU_MAIN;
-    ATM.play(music);
+    ATM.play(themeSong);
   }
 }
 
@@ -896,7 +896,7 @@ void stateShowReallyQuit() {
     {
       case true:
         gameState = STATE_MENU_MAIN;
-        ATM.play(music);
+        ATM.play(themeSong);
         break;
       case false:
         disp_state = prev_disp_state;

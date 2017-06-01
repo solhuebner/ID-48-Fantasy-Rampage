@@ -86,7 +86,7 @@ void stateMenuIntro()
   if (globalCounter > 120)
   {
     gameState = STATE_MENU_MAIN;
-    ATM.play(music);
+    ATM.play(themeSong);
     setSmallMonster();
   }
 }
