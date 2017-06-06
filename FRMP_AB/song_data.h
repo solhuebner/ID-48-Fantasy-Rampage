@@ -52,7 +52,7 @@ Song themeSong[] = {
 
   //"Intro channel 2"
   0x40, 64,               // FX: SET VOLUME: volume = 64
-  0x41, -8,               // FX: SLIDE VOLUME ON: -8
+  0x41, -6,               // FX: SLIDE VOLUME ON: -6
   0xFD, 1, 24,            // REPEAT: count = 1 + 1 / track = 24
   0xFC, 13,               // GOTO track 13
   0xFC, 14,               // GOTO track 14
@@ -89,7 +89,7 @@ Song themeSong[] = {
 
   //"Track channel 6"
   0x40, 64,               // FX: SET VOLUME: volume = 64
-  0x41, -8,               // FX: SLIDE VOLUME ON: -8
+  0x41, -6,               // FX: SLIDE VOLUME ON: -6
   0xFC, 13,               // GOTO track 13
   0xFC, 14,               // GOTO track 14
   0xFC, 15,               // GOTO track 15
