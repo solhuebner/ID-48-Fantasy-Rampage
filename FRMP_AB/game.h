@@ -480,7 +480,7 @@ void startGame() {
   deck_ptr = 0;
   setup_deck();
   shuffle_deck();
-  if (game_mode == GAME_MODE_ADVANCED) current_suit = SUIT_EARTH;
+  if (game_mode == GAME_MODE_ADVANCED) current_suit = random(4);
 
   drawn[PLAYER_P] = -1;
   drawn[PLAYER_C] = -1;
@@ -819,8 +819,7 @@ void stateShowCardsInPlay() {
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
   if (arduboy.justPressed(A_BUTTON | B_BUTTON))
   {
-    if (game_mode == GAME_MODE_ADVANCED) current_suit++;
-    if (current_suit > 3) current_suit = 0;
+    if (game_mode == GAME_MODE_ADVANCED) current_suit = random(4);
     disp_state = GAME_START_ROUND;
   }
 }
